@@ -6,8 +6,15 @@ import {
     Dimensions,
 } from "react-native";
 import { useState } from "react";
-function Input(props: { onchange: (e: any) => void; placeholder: string }) {
-    const { onchange, placeholder } = props;
+function Input(props: {
+    onchange: (e: any) => void;
+    placeholder: string;
+    flag?: boolean;
+    numberic?: boolean;
+}): JSX.Element {
+    props.flag = props.flag !== undefined ? props.flag : false;
+    props.numberic = props.numberic !== undefined ? props.numberic : false;
+    const { onchange, placeholder, flag, numberic } = props;
     const hieght: number = Dimensions.get("window").height;
     const width: number = Dimensions.get("window").width;
     const [focus, setFocus]: [boolean, (value: boolean) => void] =
@@ -18,15 +25,17 @@ function Input(props: { onchange: (e: any) => void; placeholder: string }) {
                 style={{
                     flex: 1,
                     width: width,
-                    padding: 40,
+                    paddingHorizontal: 50,
                     justifyContent: "center",
                     alignItems: "center",
                 }}
             >
                 <TextInput
+                    keyboardType={numberic ? "numeric" : "ascii-capable"}
+                    secureTextEntry={flag}
                     onFocus={() => setFocus(true)}
                     onBlur={() => setFocus(false)}
-                    onChange={onchange}
+                    onChangeText={onchange}
                     placeholder={placeholder}
                     style={[focus ? styles.inputFocus : styles.inputBlur]}
                 />
@@ -39,25 +48,26 @@ export default Input;
 const styles = StyleSheet.create({
     inputFocus: {
         backgroundColor: "white",
-        borderColor: "blue",
-        color: "gray",
+        borderColor: "#FF8F50",
         padding: 3,
+        color: "gray",
         paddingHorizontal: 10,
-        fontSize: 25,
-        borderWidth: 1,
+        fontSize: 15,
+        borderWidth: 2,
         borderRadius: 5,
         width: "100%",
-        height: 50,
+        height: 40,
     },
     inputBlur: {
         backgroundColor: "white",
-        borderColor: "gray",
+        borderColor: "#E0E0E0",
         padding: 3,
+        color: "gray",
         paddingHorizontal: 10,
-        fontSize: 25,
+        fontSize: 15,
         borderWidth: 1,
         borderRadius: 5,
         width: "100%",
-        height: 50,
+        height: 40,
     },
 });
