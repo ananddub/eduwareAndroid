@@ -27,13 +27,13 @@ import { useUser } from "../Context/Context";
 function Login() {
     const navigate = useNavigation();
     const height: number = Dimensions.get("window").height;
-    const hieght1 = useSharedValue(height / 1.6);
-    const hieght2 = useSharedValue(height / 1.68);
+    const hieght1 = useSharedValue(0);
+    const hieght2 = useSharedValue(0);
     const button = useSharedValue(15);
     const [isExist, setIsExist] = useState(false);
     const width: number = Dimensions.get("window").width;
     const context = useUser();
-    const [flag, setFlag] = useState(true);
+    const [flag, setFlag] = useState(false);
     const [inter, setIter]: [
         NodeJS.Timeout | null,
         (value: NodeJS.Timeout | null) => void
@@ -52,7 +52,6 @@ function Login() {
             () => {
                 hieght1.value = height / 1.6;
                 hieght2.value = height / 1.68;
-
                 console.log("animation done");
             }
         );
@@ -92,79 +91,70 @@ function Login() {
     };
 
     return (
-        <BasicDetail>
+        <Animated.View
+            style={{
+                height: height,
+                backgroundColor: "white",
+            }}
+        >
             <Animated.View
                 style={{
-                    height: height,
-                    backgroundColor: "white",
+                    height: hieght1,
+                    width: width,
+                    backgroundColor: "#FF762A",
+                    justifyContent: "center",
+                    // borderBottomLeftRadius: 100,
+                    // borderBottomRightRadius: 100,
+                    alignItems: "center",
                 }}
             >
-                <Animated.View
-                    style={{
-                        height: hieght1,
-                        width: width,
-                        backgroundColor: "#FF762A",
-                        justifyContent: "center",
-                        // borderBottomLeftRadius: 100,
-                        // borderBottomRightRadius: 100,
-                        alignItems: "center",
-                    }}
-                >
-                    <Text style={{ fontSize: 30, color: "white" }}>
-                        Welcome To
-                    </Text>
-                    <Text style={{ fontSize: 40, color: "white" }}>
-                        Eduware
-                    </Text>
-                </Animated.View>
-                <Animated.View
-                    style={{
-                        position: "absolute",
-                        marginTop: hieght2,
-                        width: width,
-                        flex: 1,
-                        justifyContent: "center",
-                        alignItems: "center",
-                    }}
-                >
-                    <Animated.View>
-                        <TouchableOpacity
-                            onPress={onHandle}
-                            activeOpacity={0.98}
+                <Text style={{ fontSize: 30, color: "white" }}>Welcome To</Text>
+                <Text style={{ fontSize: 40, color: "white" }}>Eduware</Text>
+            </Animated.View>
+            <Animated.View
+                style={{
+                    position: "absolute",
+                    marginTop: hieght2,
+                    width: width,
+                    flex: 1,
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
+                <Animated.View>
+                    <TouchableOpacity onPress={onHandle} activeOpacity={0.98}>
+                        <View
+                            style={{
+                                backgroundColor: "white",
+                                padding: 15,
+                                paddingHorizontal: flag ? 60 : 80,
+                                borderRadius: 10,
+                                elevation: 5,
+                            }}
                         >
-                            <View
+                            <Text
                                 style={{
-                                    backgroundColor: "white",
-                                    padding: 15,
-                                    paddingHorizontal: flag ? 60 : 80,
-                                    borderRadius: 10,
-                                    elevation: 5,
+                                    color: "#FF762A",
+                                    fontWeight: "bold",
+                                    fontSize: 15,
                                 }}
                             >
-                                <Text
-                                    style={{
-                                        color: "#FF762A",
-                                        fontWeight: "bold",
-                                        fontSize: 15,
-                                    }}
-                                >
-                                    {flag ? "Get Started" : "Back"}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    </Animated.View>
-                    {!flag && (
-                        <LoginFeild
-                            fun={() => {
-                                // fetch();
-                                console.log("sucuess ", context.user.userPhone);
-                                navigate.navigate("Listing");
-                            }}
-                        />
-                    )}
+                                {flag ? "Get Started" : "Back"}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
                 </Animated.View>
+                {!flag && (
+                    <LoginFeild
+                        fun={() => {
+                            // fetch();
+                            console.log("sucuess ", context.user.userPhone);
+                            navigate.navigate("Listing");
+                        }}
+                    />
+                )}
             </Animated.View>
-        </BasicDetail>
+        </Animated.View>
     );
 }
 

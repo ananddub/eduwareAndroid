@@ -226,7 +226,7 @@ export const Listing = (): JSX.Element => {
             const item = search[selected];
             // dispatch(setuserAdm(item.admno))
             dispatch(setuserAdm(item.admno));
-            dispatch(setuserClass(item.classno));
+            dispatch(setuserClass(item.class));
             dispatch(setuserRoll(item.roll));
             dispatch(setuserSection(item.section));
             dispatch(setuserFatherName(item.fname));

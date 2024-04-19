@@ -3,10 +3,13 @@ import { TouchableOpacity, StyleSheet } from "react-native";
 import { ScrollView, Image } from "react-native";
 import Svg, { Path } from "react-native-svg";
 import { iconNames } from "react-native-ico-material-design";
+import { useAppSelector } from "../app/hooks";
+import { dataSelector } from "../app/Data/userValue";
 const setSvg = (path: string) => {};
 function Home() {
     const height = Dimensions.get("window").height;
     const width = Dimensions.get("window").width;
+    const userData = useAppSelector(dataSelector);
     return (
         <View
             style={{
@@ -18,148 +21,156 @@ function Home() {
             <ScrollView>
                 <View
                     style={{
-                        width: width,
-                        height: 200,
-                        backgroundColor: "white",
-
-                        // backgroundColor: "#E2E8F0",
-                        // borderRadius: 50,
-                        flexDirection: "column",
-                        marginBottom: 10,
-
-                        borderBottomLeftRadius: 50,
-                        borderBottomRightRadius: 50,
+                        padding: 10,
+                        marginTop: 28,
+                        backgroundColor: "#F1F5F9",
                     }}
                 >
                     <View
                         style={{
-                            position: "absolute",
-                            marginTop: 50,
-                            marginLeft: 10,
-                            flexDirection: "row",
+                            width: "100%",
+                            height: 200,
+                            backgroundColor: "white",
+                            elevation: 3,
+                            // backgroundColor: "#E2E8F0",
+                            // borderRadius: 50,
+                            flexDirection: "column",
+                            marginBottom: 10,
+                            borderRadius: 10,
+                            // borderBottomLeftRadius: 50,
+                            // borderBottomRightRadius: 50,
                         }}
                     >
-                        <Image
-                            source={{ uri: "https://picsum.photos/200" }}
+                        <View
                             style={{
-                                width: 60,
-                                height: 60,
-                                borderRadius: 100 / 2,
-                                borderWidth: 2,
-                                borderColor: "gray",
-                            }}
-                        />
-                        <Text
-                            style={{
-                                alignItems: "center",
-                                justifyContent: "center",
+                                position: "absolute",
+                                marginTop: 50,
                                 marginLeft: 10,
-                                fontSize: 17,
-                                fontWeight: "500",
+                                flexDirection: "row",
                             }}
                         >
-                            Anand Kumar Dubey
-                        </Text>
-                    </View>
-                    <View
-                        style={{
-                            marginLeft: 80,
-                            marginTop: 80,
-                            flexDirection: "row",
-                        }}
-                    >
-                        <Text
+                            <Image
+                                source={{ uri: "https://picsum.photos/200" }}
+                                style={{
+                                    width: 60,
+                                    height: 60,
+                                    borderRadius: 100 / 2,
+                                    borderWidth: 2,
+                                    borderColor: "gray",
+                                }}
+                            />
+                            <Text
+                                style={{
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    marginLeft: 10,
+                                    fontSize: 17,
+                                    fontWeight: "500",
+                                }}
+                            >
+                                {userData.userName}
+                            </Text>
+                        </View>
+                        <View
                             style={{
-                                fontSize: 13,
-                                backgroundColor: "white",
-                                width: 120,
-                                textAlign: "center",
-                                padding: 2,
-                                borderRadius: 10,
-                                borderWidth: 1,
-                                borderColor: "#D1D5DB",
-                            }}
-                        >
-                            Vijay Kant Dubey
-                        </Text>
-                        <Text
-                            style={{
-                                fontSize: 14,
-                                textAlign: "center",
-                                padding: 2,
-                                marginLeft: 10,
-                                paddingHorizontal: 10,
-                                borderRadius: 10,
-                                borderWidth: 1,
-                                backgroundColor: "#ECDFFB",
-                                borderColor: "#E3D8F0",
-                                color: "#4C0F9F",
-                            }}
-                        >
-                            ASIS192000047
-                        </Text>
-                    </View>
-                    <View
-                        style={{
-                            flexDirection: "row",
-                        }}
-                    >
-                        <Text
-                            style={{
-                                marginTop: 10,
                                 marginLeft: 80,
-                                width: 100,
-                                fontSize: 14,
-                                textAlign: "center",
-                                padding: 2,
-                                paddingHorizontal: 10,
-                                borderRadius: 10,
-                                borderWidth: 1,
-                                backgroundColor: "#FDEAD8",
-                                borderColor: "#F5E2D0",
-                                color: "#AB531A",
+                                marginTop: 80,
+                                flexDirection: "row",
                             }}
                         >
-                            Roll 100
-                        </Text>
-                        <Text
+                            <Text
+                                style={{
+                                    fontSize: 13,
+                                    backgroundColor: "white",
+                                    width: 120,
+                                    textAlign: "center",
+                                    padding: 2,
+                                    borderRadius: 10,
+                                    borderWidth: 1,
+                                    borderColor: "#D1D5DB",
+                                }}
+                            >
+                                {userData.userFatherName}
+                            </Text>
+                            <Text
+                                style={{
+                                    fontSize: 14,
+                                    textAlign: "center",
+                                    padding: 2,
+                                    marginLeft: 10,
+                                    paddingHorizontal: 10,
+                                    borderRadius: 10,
+                                    borderWidth: 1,
+                                    backgroundColor: "#ECDFFB",
+                                    borderColor: "#E3D8F0",
+                                    color: "#4C0F9F",
+                                }}
+                            >
+                                {userData.userAdm}
+                            </Text>
+                        </View>
+                        <View
                             style={{
-                                marginTop: 10,
-                                marginLeft: 10,
-                                width: 100,
-                                fontSize: 14,
-                                textAlign: "center",
-                                padding: 2,
-                                paddingHorizontal: 10,
-                                borderRadius: 10,
-                                borderWidth: 1,
-                                backgroundColor: "#FFE4E6",
-                                borderColor: "#FFE4E6",
-                                color: "#BE123C",
+                                flexDirection: "row",
                             }}
                         >
-                            Class A
-                        </Text>
-                    </View>
-                    <View>
-                        <Text
-                            style={{
-                                marginTop: 10,
-                                marginLeft: 80,
-                                width: 100,
-                                fontSize: 14,
-                                textAlign: "center",
-                                padding: 2,
-                                paddingHorizontal: 10,
-                                borderRadius: 10,
-                                borderWidth: 1,
-                                backgroundColor: "#D1FAE4",
-                                borderColor: "#D3F2E1",
-                                color: "#227749",
-                            }}
-                        >
-                            Section A
-                        </Text>
+                            <Text
+                                style={{
+                                    marginTop: 10,
+                                    marginLeft: 80,
+                                    width: 100,
+                                    fontSize: 14,
+                                    textAlign: "center",
+                                    padding: 2,
+                                    paddingHorizontal: 10,
+                                    borderRadius: 10,
+                                    borderWidth: 1,
+                                    backgroundColor: "#FDEAD8",
+                                    borderColor: "#F5E2D0",
+                                    color: "#AB531A",
+                                }}
+                            >
+                                Roll {userData.userRoll}
+                            </Text>
+                            <Text
+                                style={{
+                                    marginTop: 10,
+                                    marginLeft: 10,
+                                    width: 100,
+                                    fontSize: 14,
+                                    textAlign: "center",
+                                    padding: 2,
+                                    paddingHorizontal: 10,
+                                    borderRadius: 10,
+                                    borderWidth: 1,
+                                    backgroundColor: "#FFE4E6",
+                                    borderColor: "#FFE4E6",
+                                    color: "#BE123C",
+                                }}
+                            >
+                                Class {userData.userClass}
+                            </Text>
+                        </View>
+                        <View>
+                            <Text
+                                style={{
+                                    marginTop: 10,
+                                    marginLeft: 80,
+                                    width: 100,
+                                    fontSize: 14,
+                                    textAlign: "center",
+                                    padding: 2,
+                                    paddingHorizontal: 10,
+                                    borderRadius: 10,
+                                    borderWidth: 1,
+                                    backgroundColor: "#D1FAE4",
+                                    borderColor: "#D3F2E1",
+                                    color: "#227749",
+                                }}
+                            >
+                                Section {userData.userSection}
+                            </Text>
+                        </View>
                     </View>
                 </View>
                 {/* 1st part */}
@@ -351,7 +362,7 @@ function Home() {
                     </TouchableOpacity>
                 </View>
 
-                <View style={{ height: 40 }}></View>
+                <View style={{ height: 30 }}></View>
             </ScrollView>
             {/* <View
                 style={{

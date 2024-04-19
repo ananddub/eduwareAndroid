@@ -17,16 +17,6 @@ function App(): JSX.Element {
                 <Provider store={store}>
                     <stack.Navigator>
                         <stack.Screen
-                            name="Home"
-                            component={Home}
-                            options={{
-                                headerShown: false,
-                                headerStyle: {
-                                    backgroundColor: "#F1F5F9",
-                                },
-                            }}
-                        />
-                        <stack.Screen
                             name="Login"
                             component={Login}
                             options={{
@@ -45,6 +35,16 @@ function App(): JSX.Element {
                                 },
                             }}
                             component={Listing}
+                        />
+                        <stack.Screen
+                            name="Home"
+                            component={Home}
+                            options={{
+                                headerShown: false,
+                                headerStyle: {
+                                    backgroundColor: "#F1F5F9",
+                                },
+                            }}
                         />
                     </stack.Navigator>
                 </Provider>
