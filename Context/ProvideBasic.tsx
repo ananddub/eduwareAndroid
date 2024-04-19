@@ -1,41 +1,21 @@
 import { View } from "react-native";
 import React, { useState } from "react";
-import { userDetail } from "./globalUsername";
+import { UserContext } from "./globalUsername";
+import { UserDetail } from "./Class";
 interface Props {
     children: React.ReactNode;
 }
+interface UserContextType {
+    user: UserDetail;
+    setUser: React.Dispatch<React.SetStateAction<UserDetail>>;
+}
+
 function BasicDetail({ children }: Props): JSX.Element {
-    const [userAdm, setUserAdm] = useState("");
-    const [userClass, setUserClass] = useState("");
-    const [userRoll, setUserRoll] = useState("");
-    const [userPhone, setUserPhone] = useState("");
-    const [userStatus, setUserStatus] = useState("");
-    const [userName, setUserName] = useState("");
-    const [userFatherName, setUserFatherName] = useState("");
-    const [userSession, setUserSession] = useState("");
+    const [user, setUser] = useState(new UserDetail());
     return (
-        <userDetail.Provider
-            value={{
-                userAdm,
-                setUserAdm,
-                userClass,
-                setUserClass,
-                userName,
-                setUserName,
-                userRoll,
-                setUserRoll,
-                userPhone,
-                setUserPhone,
-                userStatus,
-                setUserStatus,
-                userFatherName,
-                setUserFatherName,
-                userSession,
-                setUserSession,
-            }}
-        >
+        <UserContext.Provider value={{ user, setUser }}>
             {children}
-        </userDetail.Provider>
+        </UserContext.Provider>
     );
 }
 

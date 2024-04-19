@@ -23,6 +23,7 @@ import Animated from "react-native-reanimated";
 import LoginFeild from "../BasicComponent/LoginFeild";
 import BasicDetail from "../Context/ProvideBasic";
 import useCallback from "react";
+import { useUser } from "../Context/Context";
 function Login() {
     const navigate = useNavigation();
     const height: number = Dimensions.get("window").height;
@@ -31,6 +32,7 @@ function Login() {
     const button = useSharedValue(15);
     const [isExist, setIsExist] = useState(false);
     const width: number = Dimensions.get("window").width;
+    const context = useUser();
     const [flag, setFlag] = useState(true);
     const [inter, setIter]: [
         NodeJS.Timeout | null,
@@ -155,7 +157,8 @@ function Login() {
                         <LoginFeild
                             fun={() => {
                                 // fetch();
-                                navigate.navigate("Home");
+                                console.log("sucuess ", context.user.userPhone);
+                                navigate.navigate("Listing");
                             }}
                         />
                     )}

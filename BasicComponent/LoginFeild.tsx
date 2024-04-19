@@ -5,7 +5,10 @@ import { TouchableOpacity } from "react-native";
 import { Dimensions } from "react-native";
 import { useEffect, useState } from "react";
 import { useContext } from "react";
-import { userDetail } from "../Context/globalUsername";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { dataSelector, setuserPhone } from "../app/Data/userValue";
+import { useUser } from "../Context/Context";
+import { UserDetail } from "../Context/Class";
 import { URL } from "../Context/Address";
 import { Circle } from "react-native-animated-spinkit";
 function LoginFeild(props: { fun: () => void }): JSX.Element {
@@ -14,36 +17,28 @@ function LoginFeild(props: { fun: () => void }): JSX.Element {
     const [password, setPassword] = useState("");
     const [isExisting, setIsExisting] = useState(false);
     const [isDoesNot, setDoenNot] = useState(false);
-    const contextDetail = useContext(userDetail);
+    // const contextDetail = useUser();
+    const dispatch = useAppDispatch();
+    const data = useAppSelector(dataSelector);
     const onSubmit = async () => {
         setIsExisting(true);
         fetch(`${URL}phoneVerfication?phone=${username}`).then(
             async (response: Response) => {
                 if (response.status === 200) {
-                    const value: { status: boolean; data: any } =
-                        await response.json();
-                    if (value.status) {
+                    const value: any = (await response.json()).status;
+                    if (value.status === true) {
                         setIsExisting(false);
-                        const data = value.data[0];
-                        // contextDetail.setUserAdm(data.admno);
-                        // contextDetail.setUserClass(data.class);
-                        // contextDetail.setUserRoll(data.roll);
-                        // contextDetail.setUserSession(data.session);
-                        // contextDetail.setUserStatus(data.active);
-                        contextDetail.setUserPhone(username);
-                        // contextDetail.setUserFatherName(data.fname);
-                        // contextDetail.setUserUserName(data.name);
+                        dispatch(setuserPhone(username));
+                        console.log("userCOntext :", value.status);
                         props.fun();
                     } else {
-                        setTimeout(() => {
-                            setDoenNot(true);
-                            setIsExisting(false);
-                        }, 1000);
+                        setDoenNot(true);
+                        setIsExisting(false);
                     }
                 }
             }
         );
-        console.log(username, "\n", password);
+        // console.log(username, "\n", password);
     };
     return (
         <View style={{ marginTop: 30 }}>

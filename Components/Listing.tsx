@@ -1,19 +1,34 @@
-import { useEffect, useState } from "react";
-import { Dimensions, FlatList, Image, Text } from "react-native";
+import { useEffect, useState, useContext } from "react";
+import {
+    Dimensions,
+    FlatList,
+    Image,
+    TouchableOpacity,
+    Pressable,
+    Text,
+} from "react-native";
+import { CommonActions } from "@react-navigation/native";
 import { View } from "react-native";
 import { TextInput } from "react-native";
 import { URL } from "../Context/Address";
-
-const renderItem = ({ item }: { item: any }) => {
+import { useUser } from "../Context/Context";
+import ButtonAnimation from "../BasicComponent/Button";
+import { useNavigation } from "@react-navigation/native";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import {
+    dataSelector,
+    setuserAdm,
+    setuserClass,
+    setuserFatherName,
+    setuserName,
+    setuserRoll,
+    setuserSection,
+    setuserSession,
+    setuserStatus,
+} from "../app/Data/userValue";
+const renderItem = ({ item }: { item: any }): JSX.Element => {
     return (
-        <View
-            style={{
-                backgroundColor: "white",
-                padding: 10,
-                borderWidth: 1,
-                borderColor: "#EAEBEF",
-            }}
-        >
+        <View>
             <View
                 style={{
                     flex: 1,
@@ -126,12 +141,12 @@ const renderItem = ({ item }: { item: any }) => {
                     flex: 1,
                     position: "absolute",
                     flexDirection: "row",
-                    marginTop: 45,
+                    marginTop: 32,
                 }}
             >
                 <Text
                     style={{
-                        marginLeft: 70,
+                        marginLeft: 57,
                         color: "#414147",
                         fontSize: 12,
                         borderRadius: 10,
@@ -166,15 +181,31 @@ export const Listing = (): JSX.Element => {
     const [data, setData] = useState([]);
     const [text, setText] = useState("");
     const [focus, setFocus] = useState(false);
-    const [search, setSearch] = useState([]);
-    const phone = "9931729331";
+    const [search, setSearch]: [any, (value: any) => void] = useState([]);
+    const navigate = useNavigation();
+    const context = useUser();
+    const dispatch = useAppDispatch();
+    const userData = useAppSelector(dataSelector);
+    const [selected, setSelected]: [number, (value: number) => void] =
+        useState(-1);
+    const phone = userData.userPhone;
+    console.log("phone: ", selected);
     useEffect(() => {
-        fetch(`${URL}phoneVerfication?phone=${phone}`).then((res: any) => {
-            res.json().then((data: any) => {
-                console.log("Api Fetch length :", data.status.data[0]);
-                setData(data.status.data);
-                setSearch(data.status.data);
-            });
+        const url = `${URL}phoneVerfication?phone=${userData.userPhone}`;
+        // console.log([url, 0]);
+        fetch(url.trim()).then((res: any) => {
+            if (res.status === 200) {
+                res.json().then((data: any) => {
+                    setData(data.status.data);
+                    setSearch(data.status.data);
+                    setSelected(0);
+                    if (data.status.data.lenght == 0) {
+                        onsubmit();
+                    }
+                });
+            } else {
+                console.log("unable to connect");
+            }
         });
     }, []);
     useEffect(() => {
@@ -190,9 +221,32 @@ export const Listing = (): JSX.Element => {
             setSearch(arr);
         }
     }, [text]);
+    const onsubmit = (): void => {
+        if (selected != -1) {
+            const item = search[selected];
+            // dispatch(setuserAdm(item.admno))
+            dispatch(setuserAdm(item.admno));
+            dispatch(setuserClass(item.classno));
+            dispatch(setuserRoll(item.roll));
+            dispatch(setuserSection(item.section));
+            dispatch(setuserFatherName(item.fname));
+            dispatch(setuserName(item.name));
+            dispatch(setuserSession(item.session));
+            dispatch(setuserStatus(item.active));
+            navigate.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: "Home" }],
+                })
+            );
+            // navigate.navigate("Home");
+        } else {
+            alert("Please Select a Student");
+        }
+    };
     // 9631086222
     return (
-        <View>
+        <View style={{ height: height, backgroundColor: "white" }}>
             <View
                 style={{
                     marginTop: 100,
@@ -211,7 +265,7 @@ export const Listing = (): JSX.Element => {
                         backgroundColor: focus == true ? "white" : "#F5F5F5",
                         borderRadius: 10,
                         borderWidth: 2,
-                        borderColor: focus == true ? "#60A5FA" : "#D1D5DB",
+                        borderColor: focus == true ? "#FF762A" : "#D1D5DB",
                         paddingHorizontal: 10,
                     }}
                     onFocus={() => setFocus(true)}
@@ -226,9 +280,56 @@ export const Listing = (): JSX.Element => {
                     marginBottom: 30,
                 }}
                 data={search}
-                renderItem={renderItem}
+                renderItem={(item: any) => {
+                    return (
+                        <Pressable
+                            onPress={() => {
+                                setFocus(false);
+                                setSelected(item.index);
+                            }}
+                            style={{
+                                backgroundColor:
+                                    selected == item.index
+                                        ? "#FFF7ED"
+                                        : "white",
+                                padding: 10,
+                                borderWidth: 1,
+                                borderColor:
+                                    selected == item.index
+                                        ? "#FFEDD5"
+                                        : "#EAEBEF",
+                            }}
+                        >
+                            {renderItem(item)}
+                        </Pressable>
+                    );
+                }}
+                alwaysBounceVertical={true}
                 keyExtractor={(item) => item.admno.toString()}
             />
+            <View
+                style={{
+                    position: "absolute",
+                    flex: 1,
+                    bottom: 3,
+                }}
+            >
+                <ButtonAnimation
+                    onPrssedKey={onsubmit}
+                    styles={{
+                        color: "white",
+                        backgroundColor: "#FF762A",
+                        fontWeight: "bold",
+                        fontSize: 20,
+                        width: width / 1.3,
+                        flex: 1,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: 10,
+                    }}
+                    text="check It"
+                ></ButtonAnimation>
+            </View>
         </View>
     );
 };

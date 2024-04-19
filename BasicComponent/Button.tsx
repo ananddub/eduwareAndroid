@@ -10,13 +10,13 @@ const ButtonAnimation = (props: {
     text: string;
     flags?: boolean;
 }) => {
-    console.log(props.flags !== undefined ? props.flags : false);
+    // console.log(props.flags !== undefined ? props.flags : false);
 
     const { onPrssedKey, styles, text, flags } = props;
     const flag = useState(
         typeof flags === "boolean" && flags == true ? flags : false
     );
-    console.log(typeof props.flags, flag[0]);
+    // console.log(typeof props.flags, flag[0]);
 
     const scaleValue = useRef(new Animated.Value(1)).current;
     const width = Dimensions.get("window").width;
@@ -40,7 +40,7 @@ const ButtonAnimation = (props: {
         transform: [{ scale: scaleValue }],
     };
     const animationCirlce = () => {
-        console.log(typeof flags);
+        // console.log(typeof flags);
         if (flags === true) {
             return <Circle size={30} color="white" />;
         }
