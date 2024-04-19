@@ -2,6 +2,7 @@ import { View, Text, Dimensions } from "react-native";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import { ScrollView, Image } from "react-native";
 import Svg, { Path } from "react-native-svg";
+import { iconNames } from "react-native-ico-material-design";
 const setSvg = (path: string) => {};
 function Home() {
     const height = Dimensions.get("window").height;
@@ -162,77 +163,190 @@ function Home() {
                     </View>
                 </View>
                 {/* 1st part */}
-
                 <View style={styles.flexdata}>
                     <TouchableOpacity style={styles.box}>
-                        <Svg
+                        {/* <View style={{top:1}}> */}
+
+                        <Image
+                            source={require("../assets/annoucment.png")}
                             style={{
-                                width: 60,
-                                height: 60,
-                                top: 1,
-                                position: "absolute",
+                                width: 100,
+                                height: 100,
+                                top: -15,
+
+                                // position: "absolute",
+                                borderRadius: 100 / 2,
+                                borderWidth: 2,
                             }}
-                            viewBox="0 0 24 24"
-                        >
-                            <Path
-                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm1-13h-2v5H8v2h3v3h2v-3h3v-2h-3z"
-                                fill="#000"
-                            />
-                        </Svg>
+                        />
+                        {/* </View> */}
+                        {/* <Icon name="campaign" size={30} color="#000" /> */}
                         <Text style={styles.text}>Annoucement</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/homework.png")}
+                            style={{
+                                width: 50,
+                                height: 50,
+                                top: -15,
+                            }}
+                        />
                         <Text style={styles.text}>HomeWork</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/attendance.png")}
+                            style={{
+                                width: 100,
+                                height: 70,
+                                top: -15,
+                            }}
+                        />
                         <Text style={styles.text}>Attendence</Text>
                     </TouchableOpacity>
                 </View>
                 {/* 2nd part */}
                 <View style={styles.flexdata}>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/marks.png")}
+                            style={{
+                                width: 70,
+                                height: 70,
+                                top: -10,
+                            }}
+                        />
                         <Text style={styles.text}>Marks</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/e_content.png")}
+                            style={{
+                                width: 80,
+                                height: 80,
+                                top: -8,
+                            }}
+                        />
                         <Text style={styles.text}>Econtent</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/payment.png")}
+                            style={{
+                                width: 80,
+                                height: 80,
+                                top: -15,
+                            }}
+                        />
                         <Text style={styles.text}>Fees Payment</Text>
                     </TouchableOpacity>
                 </View>
                 {/* 3rd part */}
                 <View style={styles.flexdata}>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/calendar.png")}
+                            style={{
+                                width: 80,
+                                height: 80,
+                                top: -15,
+                            }}
+                        />
                         <Text style={styles.text}>Anual Calendar</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/comment.png")}
+                            style={{
+                                width: 65,
+                                height: 65,
+                                top: -15,
+                            }}
+                        />
                         <Text style={styles.text}>comment</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/location.png")}
+                            style={{
+                                width: 65,
+                                height: 65,
+                                top: -15,
+                            }}
+                        />
                         <Text style={styles.text}>Bus Location</Text>
                     </TouchableOpacity>
                 </View>
                 {/* 4th part */}
                 <View style={styles.flexdata}>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/notice-board.png")}
+                            style={{
+                                width: 75,
+                                height: 75,
+                                top: -10,
+                            }}
+                        />
                         <Text style={styles.text}>Notice Board</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/user.png")}
+                            style={{
+                                width: 70,
+                                height: 70,
+                                top: -10,
+                            }}
+                        />
                         <Text style={styles.text}>Profile</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/setting.png")}
+                            style={{
+                                width: 70,
+                                height: 70,
+                                top: -10,
+                            }}
+                        />
                         <Text style={styles.text}>Settings</Text>
                     </TouchableOpacity>
                 </View>
                 {/* 5th part */}
                 <View style={styles.flexdata}>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/w-t-s.png")}
+                            style={{
+                                width: 70,
+                                height: 70,
+                                top: -10,
+                            }}
+                        />
                         <Text style={styles.text}>Write To School</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/online_clas.png")}
+                            style={{
+                                width: 70,
+                                height: 70,
+                                top: -10,
+                            }}
+                        />
                         <Text style={styles.text}>Online Class</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
+                        <Image
+                            source={require("../assets/online-test.png")}
+                            style={{
+                                width: 70,
+                                height: 70,
+                                top: -10,
+                            }}
+                        />
                         <Text style={styles.text}>Online Test</Text>
                     </TouchableOpacity>
                 </View>
