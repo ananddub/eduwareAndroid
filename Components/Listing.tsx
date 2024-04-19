@@ -1,24 +1,8 @@
+import { useEffect, useState } from "react";
 import { Dimensions, FlatList, Image, Text } from "react-native";
 import { View } from "react-native";
 import { TextInput } from "react-native";
-const data = Array(100)
-    .fill(0)
-    .map((_, index) =>
-        Object.create({
-            id: index,
-            sec: "A",
-            name: "Anand Kumar Dubey",
-            class: "XI",
-            adm: "ADFSDGB1345",
-            roll: "123",
-            phone: "9876543210",
-            status: "active",
-            fname: "Vijay Kant Dubey",
-            text: `$index ${index}`,
-        })
-    );
-data[0].name = "anand";
-data[5].name = "temp";
+import { URL } from "../Context/Address";
 
 const renderItem = ({ item }: { item: any }) => {
     return (
@@ -85,7 +69,7 @@ const renderItem = ({ item }: { item: any }) => {
                                     borderRadius: 10,
                                 }}
                             >
-                                {item.sec}
+                                {item.section}
                             </Text>
                         </View>
                         <View>
@@ -169,7 +153,7 @@ const renderItem = ({ item }: { item: any }) => {
                         paddingHorizontal: 7,
                     }}
                 >
-                    {item.adm}
+                    {item.admno}
                 </Text>
             </View>
         </View>
@@ -179,7 +163,34 @@ const renderItem = ({ item }: { item: any }) => {
 export const Listing = (): JSX.Element => {
     const width: number = Dimensions.get("window").width;
     const height: number = Dimensions.get("window").height;
-
+    const [data, setData] = useState([]);
+    const [text, setText] = useState("");
+    const [focus, setFocus] = useState(false);
+    const [search, setSearch] = useState([]);
+    const phone = "9931729331";
+    useEffect(() => {
+        fetch(`${URL}phoneVerfication?phone=${phone}`).then((res: any) => {
+            res.json().then((data: any) => {
+                console.log("Api Fetch length :", data.status.data[0]);
+                setData(data.status.data);
+                setSearch(data.status.data);
+            });
+        });
+    }, []);
+    useEffect(() => {
+        const arr: any = [];
+        if (text == "") {
+            setSearch(data);
+        } else {
+            data.map((item: any) => {
+                if (item.name.toLowerCase().includes(text.toLowerCase())) {
+                    arr.push(item);
+                }
+            });
+            setSearch(arr);
+        }
+    }, [text]);
+    // 9631086222
     return (
         <View>
             <View
@@ -193,88 +204,30 @@ export const Listing = (): JSX.Element => {
                 }}
             >
                 <TextInput
+                    onChangeText={setText}
                     style={{
                         width: "100%",
                         height: 40,
-                        backgroundColor: "#F5F5F5",
+                        backgroundColor: focus == true ? "white" : "#F5F5F5",
                         borderRadius: 10,
-                        borderWidth: 1,
-                        borderColor: "#D1D5DB",
+                        borderWidth: 2,
+                        borderColor: focus == true ? "#60A5FA" : "#D1D5DB",
                         paddingHorizontal: 10,
                     }}
+                    onFocus={() => setFocus(true)}
+                    onBlur={() => setFocus(false)}
                     placeholder="Search..."
                 />
             </View>
-            {/* <View
-                style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "space-between",
-                }}
-            >
-                <Text
-                    style={{
-                        marginLeft: 75,
-                    }}
-                >
-                    Name
-                </Text>
-                <View
-                    style={{
-                        width: 150,
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                    }}
-                >
-                    <Text
-                        style={{
-                            backgroundColor: "#D1FAE4",
-                            borderColor: "#D3F2E1",
-                            color: "#227749",
-                            borderRadius: 10,
-                            borderWidth: 1,
-                            paddingHorizontal: 5,
-                        }}
-                    >
-                        Sec
-                    </Text>
-                    <Text
-                        style={{
-                            borderRadius: 10,
-                            borderWidth: 1,
-
-                            backgroundColor: "#FDEAD8",
-                            borderColor: "#F5E2D0",
-                            color: "#AB531A",
-                            paddingHorizontal: 5,
-                        }}
-                    >
-                        Roll
-                    </Text>
-                    <Text
-                        style={{
-                            borderRadius: 10,
-                            borderWidth: 1,
-                            marginRight: 10,
-                            backgroundColor: "#ECDFFB",
-                            borderColor: "#E3D8F0",
-                            color: "#4C0F9F",
-                            paddingHorizontal: 5,
-                        }}
-                    >
-                        Class
-                    </Text>
-                </View>
-            </View> */}
             <View style={{ padding: 2 }}></View>
             <FlatList
                 style={{
                     backgroundColor: "#F8F8FA",
+                    marginBottom: 30,
                 }}
-                data={data}
+                data={search}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item) => item.admno.toString()}
             />
         </View>
     );
