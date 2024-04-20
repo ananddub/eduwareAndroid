@@ -203,13 +203,9 @@ export const Listing = (): JSX.Element => {
                         Array.isArray(data.status.data),
                         data.status.data.length
                     );
-                    if (data.status.data.length === 1) {
-                        onsubmit(data.status.data[0], 0);
-                    } else {
-                        setData(data.status.data);
-                        setSearch(data.status.data);
-                        setSelected(-1);
-                    }
+                    setData(data.status.data);
+                    setSearch(data.status.data);
+                    setSelected(-1);
                 });
             } else {
                 console.log("unable to connect");

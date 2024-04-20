@@ -16,21 +16,23 @@ function ProfileInputTable(props: {
     return (
         <View
             style={{
-                width: "100%",
+                width: "95%",
                 flexDirection: "row",
                 justifyContent: "space-between",
                 paddingHorizontal: 5,
                 paddingVertical: 5,
+                // backgroundColor: "red",
             }}
         >
             <Text style={styles.text}>{title}</Text>
-            <TextInput
+            <Text style={styles.etext}>{text}</Text>
+            {/* <TextInput
                 style={isEditable == true ? styles.focus : styles.etext}
                 onChangeText={(e) => setText(e)}
                 placeholder={placeholder}
                 editable={isEditable}
                 value={text}
-            />
+            /> */}
         </View>
     );
 }
@@ -38,23 +40,25 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 15,
         fontWeight: "500",
-        maxWidth: 200,
+        width: "45%",
         color: "#4B5563",
-        backgroundColor: "white",
+        flex: 1,
         flexDirection: "column",
         paddingLeft: 20,
-        borderRadius: 10,
         paddingTop: 20,
+        // backgroundColor: "red",
+        borderRadius: 10,
     },
     etext: {
         fontSize: 15,
         fontWeight: "500",
-        width: 200,
+        width: "55%",
         color: "#4B5563",
-        backgroundColor: "white",
+        // backgroundColor: "white",
+        // backgroundColor: "green",
         flexDirection: "column",
         paddingLeft: 20,
-        paddingTop: 20,
+        paddingTop: 10,
     },
     focus: {
         fontSize: 15,
