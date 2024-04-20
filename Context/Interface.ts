@@ -20,3 +20,14 @@ export interface Detail {
     setUserFatherName: Dispatch<SetStateAction<string>>;
     setUserSection: Dispatch<SetStateAction<string>>;
 }
+
+export interface ProfileDataEdit {
+    userAdm: string;
+    userHouseNo: string;
+    userDOB: string;
+    userFatherName: string;
+    userMotherName: string;
+    userContactNo: string;
+    userMailId: string;
+    userName: string;
+}

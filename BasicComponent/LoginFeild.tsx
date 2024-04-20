@@ -6,7 +6,22 @@ import { Dimensions } from "react-native";
 import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { dataSelector, setuserPhone } from "../app/Data/userValue";
+import {
+    dataSelector,
+    setuserAdm,
+    setuserPhone,
+    setuserClass,
+    setuserFatherName,
+    setuserHost,
+    setuserName,
+    setuserRoll,
+    setuserSection,
+    setuserSession,
+    setuserStatus,
+    setuserTrans,
+} from "../app/Data/userValue";
+import { CommonActions } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../Context/Context";
 import { UserDetail } from "../Context/Class";
 import { URL } from "../Context/Address";
@@ -17,6 +32,7 @@ function LoginFeild(props: { fun: () => void }): JSX.Element {
     const [password, setPassword] = useState("");
     const [isExisting, setIsExisting] = useState(false);
     const [isDoesNot, setDoenNot] = useState(false);
+    const navigate = useNavigation();
     // const contextDetail = useUser();
     const dispatch = useAppDispatch();
     const data = useAppSelector(dataSelector);
@@ -29,6 +45,9 @@ function LoginFeild(props: { fun: () => void }): JSX.Element {
                     if (value.status === true) {
                         setIsExisting(false);
                         dispatch(setuserPhone(username));
+                        if (value.data.length == 1) {
+                            onsubmit(value.data[0], 0);
+                        }
                         console.log("userCOntext :", value.status);
                         props.fun();
                     } else {
@@ -39,6 +58,30 @@ function LoginFeild(props: { fun: () => void }): JSX.Element {
             }
         );
         // console.log(username, "\n", password);
+    };
+    const onsubmit = (item: any, selected: number): void => {
+        if (selected != -1) {
+            // dispatch(setuserAdm(item.admno))
+            dispatch(setuserAdm(item.admno));
+            dispatch(setuserClass(item.class));
+            dispatch(setuserRoll(item.roll));
+            dispatch(setuserSection(item.section));
+            dispatch(setuserFatherName(item.fname));
+            dispatch(setuserName(item.name));
+            dispatch(setuserSession(item.session));
+            dispatch(setuserStatus(item.active));
+            dispatch(setuserTrans(item.transport));
+            dispatch(setuserHost(item.hostel));
+            navigate.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: "Home" }],
+                })
+            );
+            // navigate.navigate("Home");
+        } else {
+            alert("Please Select a Student");
+        }
     };
     return (
         <View style={{ marginTop: 30 }}>

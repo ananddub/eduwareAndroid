@@ -5,11 +5,14 @@ import Svg, { Path } from "react-native-svg";
 import { iconNames } from "react-native-ico-material-design";
 import { useAppSelector } from "../app/hooks";
 import { dataSelector } from "../app/Data/userValue";
+import Profile from "./Profile.1";
+import { useNavigation } from "@react-navigation/native";
 const setSvg = (path: string) => {};
 function Home() {
     const height = Dimensions.get("window").height;
     const width = Dimensions.get("window").width;
     const userData = useAppSelector(dataSelector);
+    const navigator = useNavigation();
     return (
         <View
             style={{
@@ -32,6 +35,7 @@ function Home() {
                             height: 200,
                             backgroundColor: "white",
                             elevation: 3,
+                            shadowColor: "#94A3B8",
                             // backgroundColor: "#E2E8F0",
                             // borderRadius: 50,
                             flexDirection: "column",
@@ -184,10 +188,6 @@ function Home() {
                                 width: 100,
                                 height: 100,
                                 top: -15,
-
-                                // position: "absolute",
-                                borderRadius: 100 / 2,
-                                borderWidth: 2,
                             }}
                         />
                         {/* </View> */}
@@ -302,7 +302,10 @@ function Home() {
                         />
                         <Text style={styles.text}>Notice Board</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.box}>
+                    <TouchableOpacity
+                        onPress={() => navigator.navigate("Profile")}
+                        style={styles.box}
+                    >
                         <Image
                             source={require("../assets/user.png")}
                             style={{

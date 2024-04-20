@@ -12,6 +12,8 @@ export interface ReduxUserDetail {
     userFatherName: string;
     userName: string;
     userSection: string;
+    userTrans: string;
+    userHost: string;
 }
 
 const initialState: ReduxUserDetail = {
@@ -24,6 +26,8 @@ const initialState: ReduxUserDetail = {
     userFatherName: "",
     userName: "",
     userSection: "",
+    userTrans: "",
+    userHost: "",
 };
 
 export const dataSlice = createSlice({
@@ -66,6 +70,13 @@ export const dataSlice = createSlice({
         setuserSection: (state, value: PayloadAction<string>) => {
             state.userSection = value.payload;
         },
+
+        setuserTrans: (state, value: PayloadAction<string>) => {
+            state.userTrans = value.payload;
+        },
+        setuserHost: (state, value: PayloadAction<string>) => {
+            state.userHost = value.payload;
+        },
     },
 });
 
@@ -79,6 +90,8 @@ export const {
     setuserFatherName,
     setuserName,
     setuserSection,
+    setuserTrans,
+    setuserHost,
 } = dataSlice.actions;
 
 export const dataSelector = (state: RootState) => state.ReduxUserDetails;

@@ -5,9 +5,10 @@ import BasicDetail from "./Context/ProvideBasic";
 import Login from "./Components/Login";
 import Home from "./Components/Home";
 import { Provider } from "react-redux";
+import Profile from "./Components/Profile";
 import { Listing } from "./Components/Listing";
 import { store } from "./app/sotre";
-
+// 9122036829
 const stack = createNativeStackNavigator();
 function App(): JSX.Element {
     // return ;
@@ -16,6 +17,16 @@ function App(): JSX.Element {
             <NavigationContainer>
                 <Provider store={store}>
                     <stack.Navigator>
+                        <stack.Screen
+                            name="Profile"
+                            component={Profile}
+                            options={{
+                                headerShown: false,
+                                headerStyle: {
+                                    backgroundColor: "white",
+                                },
+                            }}
+                        />
                         <stack.Screen
                             name="Login"
                             component={Login}

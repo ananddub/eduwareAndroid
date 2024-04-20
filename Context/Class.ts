@@ -1,3 +1,4 @@
+import { ProfileDataEdit } from "./Interface";
 export class UserDetail {
     private _userAdm?: string;
     private _userClass?: string;
@@ -104,4 +105,19 @@ export class UserDetail {
     set userSection(value: string | undefined) {
         this._userSection = value;
     }
+}
+
+export class ProfileEditable {
+    constructor(
+        public userAdm: string = "",
+        public userHouseNo: string = "",
+        public userDOB: string = "",
+        public userFatherName: string = "",
+        public userMotherName: string = "",
+        public userContactNo: string = "",
+        public userPhone: string = "",
+        public userAddress: string = "",
+        public userMailId: string = "",
+        public userName: string = ""
+    ) {}
 }

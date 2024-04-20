@@ -20,11 +20,13 @@ import {
     setuserAdm,
     setuserClass,
     setuserFatherName,
+    setuserHost,
     setuserName,
     setuserRoll,
     setuserSection,
     setuserSession,
     setuserStatus,
+    setuserTrans,
 } from "../app/Data/userValue";
 const renderItem = ({ item }: { item: any }): JSX.Element => {
     return (
@@ -187,7 +189,7 @@ export const Listing = (): JSX.Element => {
     const dispatch = useAppDispatch();
     const userData = useAppSelector(dataSelector);
     const [selected, setSelected]: [number, (value: number) => void] =
-        useState(-1);
+        useState(0);
     const phone = userData.userPhone;
     console.log("phone: ", selected);
     useEffect(() => {
@@ -196,11 +198,17 @@ export const Listing = (): JSX.Element => {
         fetch(url.trim()).then((res: any) => {
             if (res.status === 200) {
                 res.json().then((data: any) => {
-                    setData(data.status.data);
-                    setSearch(data.status.data);
-                    setSelected(0);
-                    if (data.status.data.lenght == 0) {
-                        onsubmit();
+                    console.log(
+                        "isArray :",
+                        Array.isArray(data.status.data),
+                        data.status.data.length
+                    );
+                    if (data.status.data.length === 1) {
+                        onsubmit(data.status.data[0], 0);
+                    } else {
+                        setData(data.status.data);
+                        setSearch(data.status.data);
+                        setSelected(-1);
                     }
                 });
             } else {
@@ -221,9 +229,8 @@ export const Listing = (): JSX.Element => {
             setSearch(arr);
         }
     }, [text]);
-    const onsubmit = (): void => {
+    const onsubmit = (item: any, selected: number): void => {
         if (selected != -1) {
-            const item = search[selected];
             // dispatch(setuserAdm(item.admno))
             dispatch(setuserAdm(item.admno));
             dispatch(setuserClass(item.class));
@@ -233,6 +240,8 @@ export const Listing = (): JSX.Element => {
             dispatch(setuserName(item.name));
             dispatch(setuserSession(item.session));
             dispatch(setuserStatus(item.active));
+            dispatch(setuserTrans(item.transport));
+            dispatch(setuserHost(item.hostel));
             navigate.dispatch(
                 CommonActions.reset({
                     index: 0,
@@ -315,7 +324,7 @@ export const Listing = (): JSX.Element => {
                 }}
             >
                 <ButtonAnimation
-                    onPrssedKey={onsubmit}
+                    onPrssedKey={() => onsubmit(search[selected], selected)}
                     styles={{
                         color: "white",
                         backgroundColor: "#FF762A",
