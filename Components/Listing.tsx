@@ -176,7 +176,7 @@ const renderItem = ({ item }: { item: any }): JSX.Element => {
         </View>
     );
 };
-
+import { Modal } from "react-native";
 export const Listing = (): JSX.Element => {
     const width: number = Dimensions.get("window").width;
     const height: number = Dimensions.get("window").height;
@@ -186,23 +186,28 @@ export const Listing = (): JSX.Element => {
     const [search, setSearch]: [any, (value: any) => void] = useState([]);
     const navigate = useNavigation();
     const context = useUser();
+    const [visible, setVisible] = useState(false);
     const dispatch = useAppDispatch();
     const userData = useAppSelector(dataSelector);
     const [selected, setSelected]: [number, (value: number) => void] =
         useState(0);
     const phone = userData.userPhone;
-    console.log("phone: ", selected);
+    // console.log("phone: ", selected);
     useEffect(() => {
         const url = `${URL}phoneVerfication?phone=${userData.userPhone}`;
         // console.log([url, 0]);
         fetch(url.trim()).then((res: any) => {
             if (res.status === 200) {
                 res.json().then((data: any) => {
-                    console.log(
-                        "isArray :",
-                        Array.isArray(data.status.data),
-                        data.status.data.length
-                    );
+                    // console.log(
+                    //     "isArray :",
+                    //     Array.isArray(data.status.data),
+                    //     data.status.data.length
+                    // );
+                    if (data.status.data.length == 1) {
+                        onsubmit(data.status.data[0], 0);
+                        return;
+                    }
                     setData(data.status.data);
                     setSearch(data.status.data);
                     setSelected(-1);
@@ -227,6 +232,7 @@ export const Listing = (): JSX.Element => {
     }, [text]);
     const onsubmit = (item: any, selected: number): void => {
         if (selected != -1) {
+            console.log("new admno, selected :", item.admno);
             // dispatch(setuserAdm(item.admno))
             dispatch(setuserAdm(item.admno));
             dispatch(setuserClass(item.class));
@@ -246,7 +252,8 @@ export const Listing = (): JSX.Element => {
             );
             // navigate.navigate("Home");
         } else {
-            alert("Please Select a Student");
+            // alert("Please Select a Student");
+            setVisible(true);
         }
     };
     // 9631086222
@@ -335,6 +342,73 @@ export const Listing = (): JSX.Element => {
                     text="check It"
                 ></ButtonAnimation>
             </View>
+            <Modal
+                animationType="fade"
+                visible={visible}
+                transparent={true}
+                onRequestClose={() => {
+                    setVisible(false);
+                }}
+            >
+                <View
+                    style={{
+                        flex: 1,
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        paddingHorizontal: 30,
+                    }}
+                >
+                    <View
+                        style={{
+                            width: "100%",
+                            height: 150,
+                            backgroundColor: "#F1F5F9",
+                            flexDirection: "Column",
+                            borderRadius: 20,
+                            justifyContent: "space-around",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Text
+                            style={{
+                                fontSize: 20,
+                                fontWeight: "500",
+                                color: "#4B5563",
+                                textAlign: "center",
+                            }}
+                        >
+                            please select any student
+                        </Text>
+                        <TouchableOpacity
+                            onPress={() => setVisible(false)}
+                            style={{
+                                width: 200,
+                                height: 50,
+
+                                backgroundColor: "#FF3E03",
+                                borderRadius: 25,
+                                elevation: 32,
+                                shadowColor: "#FF3E03",
+                                justifyContent: "center",
+                                alignItems: "center",
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 20,
+                                    fontWeight: "400",
+                                    color: "white",
+                                    textAlign: "center",
+                                }}
+                            >
+                                Done
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 };

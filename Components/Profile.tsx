@@ -1,5 +1,5 @@
 import * as Font from "expo-font";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     View,
     Image,
@@ -20,8 +20,12 @@ import {
 import ProfileInputTable from "../BasicComponent/ProfileInput";
 import { Svg, Path } from "react-native-svg";
 import Animated from "react-native-reanimated";
-
+import { CommonActions } from "@react-navigation/native";
 import { ProfileEditable } from "../Context/Class";
+import { useNavigation } from "@react-navigation/native";
+import { URL } from "../Context/Address";
+import { dataSelector } from "../app/Data/userValue";
+import { useAppSelector } from "../app/hooks";
 const onChangeData = (title: string, data: string) => {};
 function Profile() {
     const [isEditable, setIsEditable]: [boolean, (value: boolean) => void] =
@@ -30,6 +34,10 @@ function Profile() {
     const state = new ProfileEditable();
     const hieght: number = Dimensions.get("window").height;
     const width: number = Dimensions.get("window").width;
+    const navigator = useNavigation();
+    const userData = useAppSelector(dataSelector);
+    const [fetchData, setFetchData]: [any, (data: any) => void] = useState();
+    const [reload, setReload] = useState(true);
     const onChange = (title: string, data: string) => {
         switch (title) {
             case "name":
@@ -55,17 +63,42 @@ function Profile() {
                 state.userAddress = data;
         }
     };
+    useEffect(() => {
+        console.log(userData.userAdm);
+        const url = `${URL}BasicDetails?admno=${userData.userAdm}`;
+        fetch(url).then((res) => {
+            if (res.status === 200) {
+                res.json().then((data: any) => {
+                    console.log(data.status.data.length);
+                    setFetchData(data.status.data[0]);
+                });
+            } else {
+                console.log("unable to connect");
+            }
+        });
+        console.log("Reloaded successfully");
+    }, [reload]);
+
+    useEffect(() => {
+        const unsubscribe = navigator.addListener("focus", () => {
+            setTimeout(() => setReload(!reload), 100);
+        });
+        return unsubscribe;
+    }, [navigator]);
 
     const handlePressIn = () => {
         console.log("commed in");
         console.log(blur);
         setBlur(10);
-        // blur.value = withTiming(10, { duration: 300 });
     };
 
     const handlePressOut = () => {
         setBlur(0.1);
         console.log(blur);
+    };
+    const onEdit = () => {
+        navigator.navigate("Edit Profile", { data: fetchData });
+        console.log("welcome to edit profile");
     };
     return (
         <Animated.View
@@ -98,10 +131,14 @@ function Profile() {
                     }}
                 >
                     <TouchableOpacity
+                        onPress={() => {
+                            console.log("clicked Back button");
+                            navigator.goBack();
+                        }}
                         style={{
                             position: "absolute",
                             left: 10,
-                            top: 20,
+                            top: 40,
                         }}
                     >
                         <Svg
@@ -118,7 +155,8 @@ function Profile() {
                     </TouchableOpacity>
                     <Pressable
                         style={{
-                            position: "absolute",
+                            // position: "absolute",
+                            backgroundColor: "red",
                             width: width,
                         }}
                         onPressIn={handlePressIn}
@@ -128,7 +166,7 @@ function Profile() {
                             style={{
                                 bottom: -70,
                                 width: width,
-                                height: 120,
+                                height: 0,
                                 flexDirection: "row",
                                 justifyContent: "center",
                                 alignItems: "center",
@@ -181,7 +219,8 @@ function Profile() {
                             color: "black",
                         }}
                     >
-                        Anand Kumar Dubey
+                        {fetchData?.name}
+                        {/* Anand Kumar Dubey */}
                     </Text>
                     <Text
                         style={{
@@ -190,7 +229,8 @@ function Profile() {
                             color: "gray",
                         }}
                     >
-                        ASIS192000047
+                        {fetchData?.admno}
+                        {/* ASIS192000047 */}
                     </Text>
                 </View>
                 <View
@@ -219,7 +259,7 @@ function Profile() {
                             style={{
                                 height: 100,
                                 width: "100%",
-                                marginTop: 50,
+                                marginTop: 10,
                                 // backgroundColor: "red",
                                 paddingVertical: 20,
                                 paddingHorizontal: 10,
@@ -242,7 +282,7 @@ function Profile() {
                                     Personal Info
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={onEdit}>
                                 <Text
                                     style={{
                                         fontSize: 15,
@@ -260,31 +300,7 @@ function Profile() {
                                 title="Name"
                                 isEditable={false}
                                 placeholder="Enter your name"
-                                value="Anand Kumar Dubey"
-                                onChange={onChange}
-                            />
-                            <ProfileInputTable
-                                name="class"
-                                title="Class"
-                                isEditable={false}
-                                placeholder="Enter your class"
-                                value="10"
-                                onChange={onChange}
-                            />
-                            <ProfileInputTable
-                                name="section"
-                                title="Section"
-                                isEditable={false}
-                                placeholder="Enter your section"
-                                value="A"
-                                onChange={onChange}
-                            />
-                            <ProfileInputTable
-                                name="roll"
-                                title="Roll No"
-                                isEditable={false}
-                                placeholder="Enter your roll number"
-                                value="001"
+                                value={fetchData?.name}
                                 onChange={onChange}
                             />
                             <ProfileInputTable
@@ -292,7 +308,39 @@ function Profile() {
                                 title="Adm No"
                                 isEditable={false}
                                 placeholder="Enter your admission number"
-                                value="123456"
+                                value={fetchData?.admno}
+                                onChange={onChange}
+                            />
+                            <ProfileInputTable
+                                name="class"
+                                title="Class"
+                                isEditable={false}
+                                placeholder="Enter your class"
+                                value={fetchData?.class}
+                                onChange={onChange}
+                            />
+                            <ProfileInputTable
+                                name="section"
+                                title="Section"
+                                isEditable={false}
+                                placeholder="Enter your section"
+                                value={fetchData?.section}
+                                onChange={onChange}
+                            />
+                            <ProfileInputTable
+                                name="roll"
+                                title="Roll No"
+                                isEditable={false}
+                                placeholder="Enter your roll number"
+                                value={fetchData?.roll}
+                                onChange={onChange}
+                            />
+                            <ProfileInputTable
+                                name="Gender"
+                                title="Gender"
+                                isEditable={false}
+                                placeholder=""
+                                value={fetchData?.gender}
                                 onChange={onChange}
                             />
                         </View>
@@ -325,7 +373,7 @@ function Profile() {
                                     Aditional Info
                                 </Text>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={onEdit}>
                                 <Text
                                     style={{
                                         fontSize: 15,
@@ -358,7 +406,7 @@ function Profile() {
                                 title="House's Name"
                                 isEditable={false}
                                 placeholder="Enter your house name"
-                                value="Defeence colony rambag"
+                                value={fetchData?.house}
                                 onChange={onChange}
                             />
                             <ProfileInputTable
@@ -366,7 +414,7 @@ function Profile() {
                                 title="Father's Name"
                                 isEditable={false}
                                 placeholder="Enter your Father name"
-                                value="Vijay Kant Dubey"
+                                value={fetchData?.fname}
                                 onChange={onChange}
                             />
                             <ProfileInputTable
@@ -374,7 +422,7 @@ function Profile() {
                                 title="mname"
                                 isEditable={false}
                                 placeholder="Enter your Mother name"
-                                value="Sarita Devi"
+                                value={fetchData?.mname}
                                 onChange={onChange}
                             />
                             <ProfileInputTable
@@ -382,92 +430,19 @@ function Profile() {
                                 title="Phone Number"
                                 isEditable={false}
                                 placeholder="Enter your phone number"
-                                value="9122349557"
+                                value={fetchData?.fmob}
                                 onChange={onChange}
                             />
+
                             <ProfileInputTable
-                                name="email"
-                                title="Email Address"
-                                isEditable={false}
-                                placeholder="Enter your email address"
-                                value="email@example.com"
-                                onChange={onChange}
-                            />
-                            <ProfileInputTable
-                                name="host"
+                                name="Trans"
                                 title="Trans"
                                 isEditable={false}
                                 placeholder="Enter your  Transport"
                                 value="Yes"
                                 onChange={onChange}
                             />
-                            <ProfileInputTable
-                                name="Address"
-                                title="Address"
-                                isEditable={false}
-                                placeholder="Enter your  address"
-                                value="Defence colony rambag purnea road number 7"
-                                onChange={onChange}
-                            />
                         </View>
-                        {/* <View style={styles.textContainer}>
-                            <ProfileInputTable
-                                name="address"
-                                title="Address"
-                                isEditable={false}
-                                placeholder="Enter your address"
-                                value="Blue"
-                                onChange={onChange}
-                            />
-                            <ProfileInputTable
-                                name="dob"
-                                title="DOB"
-                                isEditable={false}
-                                placeholder="Enter your date of birth"
-                                value="01/01/2000"
-                                onChange={onChange}
-                            />
-                            <ProfileInputTable
-                                name="fname"
-                                title="Father's Name"
-                                isEditable={false}
-                                placeholder="Enter your father's name"
-                                value="Vijay Kant dubey"
-                                onChange={onChange}
-                            />
-                            <ProfileInputTable
-                                name="mname"
-                                title="Mother's Name"
-                                isEditable={false}
-                                placeholder="Enter your mother's name"
-                                value="Sarita devi"
-                                onChange={onChange}
-                            />
-                            <ProfileInputTable
-                                name="phone"
-                                title="Contact No"
-                                isEditable={false}
-                                placeholder="Enter your contact number"
-                                value="1234567890"
-                                onChange={onChange}
-                            />
-                            <ProfileInputTable
-                                name="email"
-                                title="Mail Id"
-                                isEditable={false}
-                                placeholder="Enter your email address"
-                                value="example@example.com"
-                                onChange={onChange}
-                            />
-                            <ProfileInputTable
-                                name="trans"
-                                title="Trans"
-                                isEditable={false}
-                                placeholder="Enter your transportation status"
-                                value="Yes"
-                                onChange={onChange}
-                            />
-                        </View> */}
                     </View>
                 </View>
             </ScrollView>

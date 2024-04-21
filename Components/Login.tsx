@@ -22,6 +22,7 @@ import ButtonAnimation from "../BasicComponent/Button";
 import Animated from "react-native-reanimated";
 import LoginFeild from "../BasicComponent/LoginFeild";
 import BasicDetail from "../Context/ProvideBasic";
+import { Modal } from "react-native";
 import useCallback from "react";
 import { useUser } from "../Context/Context";
 function Login() {
@@ -34,6 +35,7 @@ function Login() {
     const width: number = Dimensions.get("window").width;
     const context = useUser();
     const [flag, setFlag] = useState(false);
+    // const [visible, setVisible] = useState(false);
     const [inter, setIter]: [
         NodeJS.Timeout | null,
         (value: NodeJS.Timeout | null) => void
@@ -144,6 +146,7 @@ function Login() {
                         </View>
                     </TouchableOpacity>
                 </Animated.View>
+
                 {!flag && (
                     <LoginFeild
                         fun={() => {

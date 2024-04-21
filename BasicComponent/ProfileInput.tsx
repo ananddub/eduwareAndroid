@@ -25,7 +25,7 @@ function ProfileInputTable(props: {
             }}
         >
             <Text style={styles.text}>{title}</Text>
-            <Text style={styles.etext}>{text}</Text>
+            <Text style={styles.etext}>{value}</Text>
             {/* <TextInput
                 style={isEditable == true ? styles.focus : styles.etext}
                 onChangeText={(e) => setText(e)}
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     etext: {
+        flex: 1,
         fontSize: 15,
         fontWeight: "500",
         width: "55%",
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
         // backgroundColor: "green",
         flexDirection: "column",
         paddingLeft: 20,
-        paddingTop: 10,
+        paddingTop: 20,
     },
     focus: {
         fontSize: 15,

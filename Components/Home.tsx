@@ -241,7 +241,12 @@ function Home() {
                         />
                         <Text style={styles.text}>Econtent</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.box}>
+                    <TouchableOpacity
+                        style={styles.box}
+                        onPress={() =>
+                            navigator.navigate("Fee Payment Profile")
+                        }
+                    >
                         <Image
                             source={require("../assets/payment.png")}
                             style={{
