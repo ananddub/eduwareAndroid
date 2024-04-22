@@ -23,10 +23,11 @@ function Payment() {
     const [data, setData]: any = useState();
     const navigate = useNavigation();
     useEffect(() => {
-        fetch(`${URL}BasicDetails?admno=${admno}`).then(async (resp: any) => {
-            const value = await resp.json();
-            setData(value.status.data[0]);
-        });
+        setData(appData.userData.tbl_admission);
+        // fetch(`${URL}BasicDetails?admno=${admno}`).then(async (resp: any) => {
+        //     const value = await resp.json();
+        //     setData(value.status.data[0]);
+        // });
     }, []);
     return (
         <>

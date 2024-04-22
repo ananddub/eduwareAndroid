@@ -66,16 +66,17 @@ function Profile() {
     useEffect(() => {
         console.log(userData.userAdm);
         const url = `${URL}BasicDetails?admno=${userData.userAdm}`;
-        fetch(url).then((res) => {
-            if (res.status === 200) {
-                res.json().then((data: any) => {
-                    console.log(data.status.data.length);
-                    setFetchData(data.status.data[0]);
-                });
-            } else {
-                console.log("unable to connect");
-            }
-        });
+        setFetchData(userData.userData.tbl_admission);
+        // fetch(url).then((res) => {
+        //     if (res.status === 200) {
+        //         res.json().then((data: any) => {
+        //             console.log(data.status.data.length);
+        //             setFetchData(data.status.data[0]);
+        //         });
+        //     } else {
+        //         console.log("unable to connect");
+        //     }
+        // });
         console.log("Reloaded successfully");
     }, [reload]);
 

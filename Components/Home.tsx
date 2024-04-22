@@ -1,18 +1,51 @@
-import { View, Text, Dimensions } from "react-native";
+import { View, Text, Dimensions, Modal } from "react-native";
 import { TouchableOpacity, StyleSheet } from "react-native";
 import { ScrollView, Image } from "react-native";
-import Svg, { Path } from "react-native-svg";
+import Svg, { Path, err } from "react-native-svg";
 import { iconNames } from "react-native-ico-material-design";
-import { useAppSelector } from "../app/hooks";
-import { dataSelector } from "../app/Data/userValue";
-import Profile from "./Profile.1";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { dataSelector, setData } from "../app/Data/userValue";
+import Profile from "./Profile";
 import { useNavigation } from "@react-navigation/native";
+import { Circle } from "react-native-animated-spinkit";
+import { useEffect, useState } from "react";
+import { SqlData } from "../Context/Interface";
+import { useSelector } from "react-redux";
+import { URL } from "../Context/Address";
 const setSvg = (path: string) => {};
 function Home() {
     const height = Dimensions.get("window").height;
     const width = Dimensions.get("window").width;
     const userData = useAppSelector(dataSelector);
+    const [visible, setVisible] = useState(true);
     const navigator = useNavigation();
+    const dispatch = useAppDispatch();
+    useEffect(() => {
+        console.log("reloaded ");
+        fetch(`${URL}paymentDetails?admno=${userData.userAdm}`)
+            .then((response: any) => {
+                if (response.status === 200) {
+                    response.json().then((data: any) => {
+                        try {
+                            if (data.status === false) {
+                                console.log(data);
+                                return;
+                            }
+                            console.clear();
+                            const newvalue: SqlData = data.data;
+                            console.log("success");
+                            dispatch(setData(newvalue));
+                            setVisible(false);
+                        } catch (err: any) {
+                            console.log("inner err", err);
+                        }
+                    });
+                }
+            })
+            .catch((error: any) => {
+                console.log(error);
+            });
+    }, []);
     return (
         <View
             style={{
@@ -21,6 +54,27 @@ function Home() {
                 backgroundColor: "#F1F5F9",
             }}
         >
+            <Modal
+                animationType="fade"
+                visible={visible}
+                transparent={true}
+                onRequestClose={() => {
+                    setVisible(false);
+                }}
+            >
+                <View
+                    style={{
+                        flex: 1,
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        paddingHorizontal: 30,
+                    }}
+                >
+                    <Circle size={80} color="white"></Circle>
+                </View>
+            </Modal>
             <ScrollView>
                 <View
                     style={{
