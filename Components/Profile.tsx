@@ -1,5 +1,5 @@
 import * as Font from "expo-font";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
     View,
     Image,
@@ -11,22 +11,14 @@ import {
     Dimensions,
     Pressable,
 } from "react-native";
-import {
-    useSharedValue,
-    withSequence,
-    withSpring,
-    withTiming,
-} from "react-native-reanimated";
 import ProfileInputTable from "../BasicComponent/ProfileInput";
 import { Svg, Path } from "react-native-svg";
 import Animated from "react-native-reanimated";
-import { CommonActions } from "@react-navigation/native";
 import { ProfileEditable } from "../Context/Class";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { URL } from "../Context/Address";
 import { dataSelector } from "../app/Data/userValue";
 import { useAppSelector } from "../app/hooks";
-const onChangeData = (title: string, data: string) => {};
 function Profile() {
     const [isEditable, setIsEditable]: [boolean, (value: boolean) => void] =
         useState(false);
@@ -66,26 +58,19 @@ function Profile() {
     useEffect(() => {
         console.log(userData.userAdm);
         const url = `${URL}BasicDetails?admno=${userData.userAdm}`;
-        setFetchData(userData.userData.tbl_admission);
-        // fetch(url).then((res) => {
-        //     if (res.status === 200) {
-        //         res.json().then((data: any) => {
-        //             console.log(data.status.data.length);
-        //             setFetchData(data.status.data[0]);
-        //         });
-        //     } else {
-        //         console.log("unable to connect");
-        //     }
-        // });
+        setFetchData(userData?.userData.tbl_admission);
         console.log("Reloaded successfully");
     }, [reload]);
 
-    useEffect(() => {
-        const unsubscribe = navigator.addListener("focus", () => {
-            setTimeout(() => setReload(!reload), 100);
-        });
-        return unsubscribe;
-    }, [navigator]);
+    useFocusEffect(
+        useCallback(() => {
+            setTimeout(() => {
+                console.log("reloaded me");
+                console.log(userData?.userData.tbl_admission.fname);
+                setFetchData(userData.userData.tbl_admission);
+            }, 1000);
+        }, [])
+    );
 
     const handlePressIn = () => {
         console.log("commed in");
@@ -93,6 +78,7 @@ function Profile() {
         setBlur(10);
     };
 
+    useEffect(() => {}, [userData]);
     const handlePressOut = () => {
         setBlur(0.1);
         console.log(blur);
@@ -287,6 +273,7 @@ function Profile() {
                                 <Text
                                     style={{
                                         fontSize: 15,
+                                        color: "gray",
                                         // color: ,
                                         fontWeight: 500,
                                     }}
@@ -378,6 +365,7 @@ function Profile() {
                                 <Text
                                     style={{
                                         fontSize: 15,
+                                        color: "gray",
                                         // color: ,
                                         fontWeight: 500,
                                     }}

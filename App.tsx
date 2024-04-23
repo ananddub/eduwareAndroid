@@ -1,6 +1,7 @@
 // NavigationContainer
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
 import BasicDetail from "./Context/ProvideBasic";
 import Login from "./Components/Login";
 import Home from "./Components/Home";
@@ -12,6 +13,7 @@ import InputProfile from "./Components/InputProfile";
 import Testing from "./Components/Test";
 import Payment from "./Components/payment";
 import Input from "./BasicComponent/Input";
+import { useNavigation } from "@react-navigation/native";
 import InputPaymentProfile from "./Components/InnputPayment";
 // 9122036829
 const stack = createNativeStackNavigator();
@@ -32,6 +34,18 @@ function App(): JSX.Element {
                                 },
                             }}
                         />
+
+                        <stack.Screen
+                            name="Listing"
+                            options={{
+                                headerShown: false,
+                                headerStyle: {
+                                    backgroundColor: "white",
+                                },
+                                animation: "ios",
+                            }}
+                            component={Listing}
+                        />
                         <stack.Screen
                             name="Home"
                             component={Home}
@@ -44,24 +58,23 @@ function App(): JSX.Element {
                         />
 
                         <stack.Screen
-                            name="Listing"
-                            options={{
-                                headerShown: false,
-                                headerStyle: {
-                                    backgroundColor: "white",
-                                },
-                            }}
-                            component={Listing}
-                        />
-
-                        <stack.Screen
                             name="Edit Profile"
                             component={InputProfile}
                             initialParams={{ data: { fmob: "" } }}
+                            listeners={{
+                                beforeRemove: () => {
+                                    console.log("back key pressed");
+                                    return;
+                                },
+                            }}
                             options={{
                                 headerStyle: {
                                     backgroundColor: "white",
                                 },
+                                animation: "ios",
+                                animationDuration: 1000,
+
+                                headerBackButtonMenuEnabled: true,
                             }}
                         />
                         <stack.Screen
@@ -72,27 +85,33 @@ function App(): JSX.Element {
                                 headerStyle: {
                                     backgroundColor: "white",
                                 },
+                                animation: "ios",
+                                animationDuration: 1000,
                             }}
                         />
                         <stack.Screen
                             name="Fee Payment Profile"
                             component={Payment}
-                            // options={{
-                            //     headerShown: false,
-                            //     headerStyle: {
-                            //         backgroundColor: "white",
-                            //     },
-                            // }}
+                            options={{
+                                // headerShown: false,
+                                headerStyle: {
+                                    backgroundColor: "white",
+                                },
+                                animation: "ios",
+                                animationDuration: 1000,
+                            }}
                         />
                         <stack.Screen
                             name="Select Month"
                             component={InputPaymentProfile}
-                            // options={{
-                            //     headerShown: false,
-                            //     headerStyle: {
-                            //         backgroundColor: "white",
-                            //     },
-                            // }}
+                            options={{
+                                // headerShown: false,
+                                headerStyle: {
+                                    backgroundColor: "white",
+                                },
+                                animation: "ios",
+                                animationDuration: 1000,
+                            }}
                         />
                     </stack.Navigator>
                 </Provider>

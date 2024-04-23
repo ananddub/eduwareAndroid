@@ -1,28 +1,25 @@
-import { View, Text, Dimensions, Modal } from "react-native";
-import { TouchableOpacity, StyleSheet } from "react-native";
-import { ScrollView, Image } from "react-native";
-import Svg, { Path, err } from "react-native-svg";
-import { iconNames } from "react-native-ico-material-design";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { dataSelector, setData } from "../app/Data/userValue";
-import Profile from "./Profile";
-import { useNavigation } from "@react-navigation/native";
-import { Circle } from "react-native-animated-spinkit";
-import { useEffect, useState } from "react";
-import { SqlData } from "../Context/Interface";
-import { useSelector } from "react-redux";
-import { URL } from "../Context/Address";
-const setSvg = (path: string) => {};
+import {View, Text, Dimensions, Modal} from 'react-native';
+import {TouchableOpacity, StyleSheet} from 'react-native';
+import {ScrollView, Image} from 'react-native';
+import {useAppDispatch, useAppSelector} from '../app/hooks';
+import {dataSelector, setFetchData} from '../app/Data/userValue';
+import {useNavigation} from '@react-navigation/native';
+import {Circle} from 'react-native-animated-spinkit';
+import {useEffect, useState} from 'react';
+import Modals from '../BasicComponent/Modal';
 function Home() {
-    const height = Dimensions.get("window").height;
-    const width = Dimensions.get("window").width;
-    const userData = useAppSelector(dataSelector);
+    const height = Dimensions.get('window').height;
+    const width = Dimensions.get('window').width;
     const [visible, setVisible] = useState(true);
+    const [isErro, setError] = useState(false);
+    const [text, setText] = useState('');
+    const [data, setData] = useState<any>(undefined);
     const navigator = useNavigation();
     const dispatch = useAppDispatch();
+    const userData = useAppSelector(dataSelector);
     useEffect(() => {
-        console.log("reloaded ");
-        fetch(`${URL}paymentDetails?admno=${userData.userAdm}`)
+        console.log('reloaded ');
+        fetch(`${userData.url}paymentDetails?admno=${userData.userAdm}`)
             .then((response: any) => {
                 if (response.status === 200) {
                     response.json().then((data: any) => {
@@ -31,47 +28,58 @@ function Home() {
                                 console.log(data);
                                 return;
                             }
-                            console.clear();
-                            const newvalue: SqlData = data.data;
-                            console.log("success");
-                            dispatch(setData(newvalue));
+                            // console.clear();
+                            console.log('success');
+                            setData(data.data);
+                            console.log('success seted data to redux');
                             setVisible(false);
                         } catch (err: any) {
-                            console.log("inner err", err);
+                            console.log('inner err', err);
+                            setError(true);
+                            setText(`dispatch function : ${err}`);
+                            setVisible(false);
                         }
                     });
+                } else {
+                    setError(true);
+                    setText('galat error');
+                    setError(true);
+                    setVisible(false);
                 }
             })
             .catch((error: any) => {
                 console.log(error);
+                setError(true);
+                setText(error.message);
             });
     }, []);
+    useEffect(() => {
+        dispatch(setFetchData(data));
+    }, [data]);
     return (
         <View
             style={{
                 height: height,
                 width: width,
-                backgroundColor: "#F1F5F9",
-            }}
-        >
+                backgroundColor: '#F1F5F9',
+            }}>
+            <Modals visible={isErro} text={text} />
             <Modal
                 animationType="fade"
                 visible={visible}
                 transparent={true}
                 onRequestClose={() => {
                     setVisible(false);
-                }}
-            >
+                }}>
                 <View
                     style={{
                         flex: 1,
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
                         paddingHorizontal: 30,
-                    }}
-                >
+                    }}>
                     <Circle size={80} color="white"></Circle>
                 </View>
             </Modal>
@@ -80,52 +88,49 @@ function Home() {
                     style={{
                         padding: 10,
                         marginTop: 28,
-                        backgroundColor: "#F1F5F9",
-                    }}
-                >
+                        backgroundColor: '#F1F5F9',
+                    }}>
                     <View
                         style={{
-                            width: "100%",
+                            width: '100%',
                             height: 200,
-                            backgroundColor: "white",
+                            backgroundColor: 'white',
                             elevation: 3,
-                            shadowColor: "#94A3B8",
+                            shadowColor: '#94A3B8',
                             // backgroundColor: "#E2E8F0",
                             // borderRadius: 50,
-                            flexDirection: "column",
+                            flexDirection: 'column',
                             marginBottom: 10,
                             borderRadius: 10,
                             // borderBottomLeftRadius: 50,
                             // borderBottomRightRadius: 50,
-                        }}
-                    >
+                        }}>
                         <View
                             style={{
-                                position: "absolute",
+                                position: 'absolute',
                                 marginTop: 50,
                                 marginLeft: 10,
-                                flexDirection: "row",
-                            }}
-                        >
+                                flexDirection: 'row',
+                            }}>
                             <Image
-                                source={{ uri: "https://picsum.photos/200" }}
+                                source={{uri: 'https://picsum.photos/200'}}
                                 style={{
                                     width: 60,
                                     height: 60,
                                     borderRadius: 100 / 2,
                                     borderWidth: 2,
-                                    borderColor: "gray",
+                                    borderColor: 'gray',
                                 }}
                             />
                             <Text
                                 style={{
-                                    alignItems: "center",
-                                    justifyContent: "center",
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
                                     marginLeft: 10,
+                                    color: 'black',
                                     fontSize: 17,
-                                    fontWeight: "500",
-                                }}
-                            >
+                                    fontWeight: '500',
+                                }}>
                                 {userData.userName}
                             </Text>
                         </View>
@@ -133,61 +138,57 @@ function Home() {
                             style={{
                                 marginLeft: 80,
                                 marginTop: 80,
-                                flexDirection: "row",
-                            }}
-                        >
+                                flexDirection: 'row',
+                            }}>
                             <Text
                                 style={{
                                     fontSize: 13,
-                                    backgroundColor: "white",
+                                    backgroundColor: 'white',
                                     width: 120,
-                                    textAlign: "center",
+                                    color: 'gray',
+                                    textAlign: 'center',
                                     padding: 2,
                                     borderRadius: 10,
                                     borderWidth: 1,
-                                    borderColor: "#D1D5DB",
-                                }}
-                            >
+                                    borderColor: '#D1D5DB',
+                                }}>
                                 {userData.userFatherName}
                             </Text>
                             <Text
                                 style={{
                                     fontSize: 14,
-                                    textAlign: "center",
+                                    textAlign: 'center',
                                     padding: 2,
                                     marginLeft: 10,
                                     paddingHorizontal: 10,
                                     borderRadius: 10,
                                     borderWidth: 1,
-                                    backgroundColor: "#ECDFFB",
-                                    borderColor: "#E3D8F0",
-                                    color: "#4C0F9F",
-                                }}
-                            >
+                                    backgroundColor: '#ECDFFB',
+                                    borderColor: '#E3D8F0',
+                                    color: '#4C0F9F',
+                                }}>
                                 {userData.userAdm}
                             </Text>
                         </View>
                         <View
                             style={{
-                                flexDirection: "row",
-                            }}
-                        >
+                                flexDirection: 'row',
+                            }}>
                             <Text
                                 style={{
                                     marginTop: 10,
                                     marginLeft: 80,
                                     width: 100,
                                     fontSize: 14,
-                                    textAlign: "center",
+                                    textAlign: 'center',
                                     padding: 2,
                                     paddingHorizontal: 10,
                                     borderRadius: 10,
                                     borderWidth: 1,
-                                    backgroundColor: "#FDEAD8",
-                                    borderColor: "#F5E2D0",
-                                    color: "#AB531A",
-                                }}
-                            >
+                                    backgroundColor: '#FDEAD8',
+                                    borderColor: '#F5E2D0',
+                                    color: '#AB531A',
+                                }}>
                                 Roll {userData.userRoll}
                             </Text>
                             <Text
@@ -196,16 +197,15 @@ function Home() {
                                     marginLeft: 10,
                                     width: 100,
                                     fontSize: 14,
-                                    textAlign: "center",
+                                    textAlign: 'center',
                                     padding: 2,
                                     paddingHorizontal: 10,
                                     borderRadius: 10,
                                     borderWidth: 1,
-                                    backgroundColor: "#FFE4E6",
-                                    borderColor: "#FFE4E6",
-                                    color: "#BE123C",
-                                }}
-                            >
+                                    backgroundColor: '#FFE4E6',
+                                    borderColor: '#FFE4E6',
+                                    color: '#BE123C',
+                                }}>
                                 Class {userData.userClass}
                             </Text>
                         </View>
@@ -216,16 +216,15 @@ function Home() {
                                     marginLeft: 80,
                                     width: 100,
                                     fontSize: 14,
-                                    textAlign: "center",
+                                    textAlign: 'center',
                                     padding: 2,
                                     paddingHorizontal: 10,
                                     borderRadius: 10,
                                     borderWidth: 1,
-                                    backgroundColor: "#D1FAE4",
-                                    borderColor: "#D3F2E1",
-                                    color: "#227749",
-                                }}
-                            >
+                                    backgroundColor: '#D1FAE4',
+                                    borderColor: '#D3F2E1',
+                                    color: '#227749',
+                                }}>
                                 Section {userData.userSection}
                             </Text>
                         </View>
@@ -237,7 +236,7 @@ function Home() {
                         {/* <View style={{top:1}}> */}
 
                         <Image
-                            source={require("../assets/annoucment.png")}
+                            source={require('../assets/annoucment.png')}
                             style={{
                                 width: 100,
                                 height: 100,
@@ -250,7 +249,7 @@ function Home() {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
                         <Image
-                            source={require("../assets/homework.png")}
+                            source={require('../assets/homework.png')}
                             style={{
                                 width: 50,
                                 height: 50,
@@ -261,7 +260,7 @@ function Home() {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
                         <Image
-                            source={require("../assets/attendance.png")}
+                            source={require('../assets/attendance.png')}
                             style={{
                                 width: 100,
                                 height: 70,
@@ -275,7 +274,7 @@ function Home() {
                 <View style={styles.flexdata}>
                     <TouchableOpacity style={styles.box}>
                         <Image
-                            source={require("../assets/marks.png")}
+                            source={require('../assets/marks.png')}
                             style={{
                                 width: 70,
                                 height: 70,
@@ -286,7 +285,7 @@ function Home() {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
                         <Image
-                            source={require("../assets/e_content.png")}
+                            source={require('../assets/e_content.png')}
                             style={{
                                 width: 80,
                                 height: 80,
@@ -298,11 +297,10 @@ function Home() {
                     <TouchableOpacity
                         style={styles.box}
                         onPress={() =>
-                            navigator.navigate("Fee Payment Profile")
-                        }
-                    >
+                            navigator.navigate('Fee Payment Profile')
+                        }>
                         <Image
-                            source={require("../assets/payment.png")}
+                            source={require('../assets/payment.png')}
                             style={{
                                 width: 80,
                                 height: 80,
@@ -316,7 +314,7 @@ function Home() {
                 <View style={styles.flexdata}>
                     <TouchableOpacity style={styles.box}>
                         <Image
-                            source={require("../assets/calendar.png")}
+                            source={require('../assets/calendar.png')}
                             style={{
                                 width: 80,
                                 height: 80,
@@ -327,7 +325,7 @@ function Home() {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
                         <Image
-                            source={require("../assets/comment.png")}
+                            source={require('../assets/comment.png')}
                             style={{
                                 width: 65,
                                 height: 65,
@@ -338,7 +336,7 @@ function Home() {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
                         <Image
-                            source={require("../assets/location.png")}
+                            source={require('../assets/location.png')}
                             style={{
                                 width: 65,
                                 height: 65,
@@ -352,7 +350,7 @@ function Home() {
                 <View style={styles.flexdata}>
                     <TouchableOpacity style={styles.box}>
                         <Image
-                            source={require("../assets/notice-board.png")}
+                            source={require('../assets/notice-board.png')}
                             style={{
                                 width: 75,
                                 height: 75,
@@ -362,11 +360,10 @@ function Home() {
                         <Text style={styles.text}>Notice Board</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => navigator.navigate("Profile")}
-                        style={styles.box}
-                    >
+                        onPress={() => navigator.navigate('Profile')}
+                        style={styles.box}>
                         <Image
-                            source={require("../assets/user.png")}
+                            source={require('../assets/user.png')}
                             style={{
                                 width: 70,
                                 height: 70,
@@ -377,7 +374,7 @@ function Home() {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
                         <Image
-                            source={require("../assets/setting.png")}
+                            source={require('../assets/setting.png')}
                             style={{
                                 width: 70,
                                 height: 70,
@@ -391,7 +388,7 @@ function Home() {
                 <View style={styles.flexdata}>
                     <TouchableOpacity style={styles.box}>
                         <Image
-                            source={require("../assets/w-t-s.png")}
+                            source={require('../assets/w-t-s.png')}
                             style={{
                                 width: 70,
                                 height: 70,
@@ -402,7 +399,7 @@ function Home() {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
                         <Image
-                            source={require("../assets/online_clas.png")}
+                            source={require('../assets/online_clas.png')}
                             style={{
                                 width: 70,
                                 height: 70,
@@ -413,7 +410,7 @@ function Home() {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.box}>
                         <Image
-                            source={require("../assets/online-test.png")}
+                            source={require('../assets/online-test.png')}
                             style={{
                                 width: 70,
                                 height: 70,
@@ -424,7 +421,7 @@ function Home() {
                     </TouchableOpacity>
                 </View>
 
-                <View style={{ height: 30 }}></View>
+                <View style={{height: 30}}></View>
             </ScrollView>
             {/* <View
                 style={{
@@ -462,38 +459,39 @@ export default Home;
 
 const styles = StyleSheet.create({
     box: {
-        width: "30%",
+        width: '30%',
         maxWidth: 110,
         height: 100,
-        backgroundColor: "white",
+        backgroundColor: 'white',
         borderRadius: 10,
-        justifyContent: "center",
-        alignItems: "center",
-        borderColor: "#F1F5F9",
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: '#F1F5F9',
         elevation: 6,
-        shadowColor: "#94A3B8",
+        shadowColor: '#94A3B8',
     },
     flexdata: {
-        width: "100%",
+        width: '100%',
         height: 100,
-        marginTop: "3%",
-        backgroundColor: "#F1F5F9",
-        flexDirection: "row",
-        justifyContent: "space-around",
-        borderColor: "white",
+        marginTop: '3%',
+        backgroundColor: '#F1F5F9',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        borderColor: 'white',
     },
     botomTap: {
-        height: "95%",
-        width: "24.6%",
+        height: '95%',
+        width: '24.6%',
         borderRadius: 5,
-        backgroundColor: "",
-        alignItems: "center",
-        justifyContent: "center",
+        backgroundColor: '',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     text: {
         fontSize: 14,
-        fontWeight: "400",
-        position: "absolute",
+        fontWeight: '400',
+        color: 'gray',
+        position: 'absolute',
         bottom: 10,
     },
 });

@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-import { CaseReducer } from "@reduxjs/toolkit";
-import { RootState } from "../sotre";
+import {createSlice} from '@reduxjs/toolkit';
+import type {PayloadAction} from '@reduxjs/toolkit';
+import {RootState} from '../sotre';
+import {SqlData} from '../../Context/Interface';
 export interface ReduxUserDetail {
     userAdm: string;
     userClass: string;
@@ -14,33 +14,38 @@ export interface ReduxUserDetail {
     userSection: string;
     userTrans: string;
     userHost: string;
-    userData: any;
+    url: string;
+    userData?: SqlData;
 }
 
 const initialState: ReduxUserDetail = {
-    userAdm: "",
-    userClass: "",
-    userRoll: "",
-    userSession: "",
-    userStatus: "",
-    userPhone: "",
-    userFatherName: "",
-    userName: "",
-    userSection: "",
-    userTrans: "",
-    userHost: "",
-    userData: "",
+    userAdm: '',
+    userClass: '',
+    userRoll: '',
+    userSession: '',
+    userStatus: '',
+    userPhone: '',
+    userFatherName: '',
+    userName: '',
+    userSection: '',
+    userTrans: '',
+    userHost: '',
+    // url: 'https://reactnativebackend-2mi8.onrender.com/',
+    url: 'http://192.168.1.6:4003/',
+    userData: undefined,
 };
 
 export const dataSlice = createSlice({
-    name: "ReduxUserDetails",
+    name: 'ReduxUserDetails',
     initialState,
     reducers: {
         // Setters
         setuserAdm: (state, value) => {
             state.userAdm = value.payload;
         },
-
+        setFetchData: (state, value: PayloadAction<any>) => {
+            state.userData = value.payload;
+        },
         setuserClass: (state, value: PayloadAction<string>) => {
             state.userClass = value.payload;
         },
@@ -79,9 +84,6 @@ export const dataSlice = createSlice({
         setuserHost: (state, value: PayloadAction<string>) => {
             state.userHost = value.payload;
         },
-        setData: (state, value: PayloadAction<any>) => {
-            state.userData = value.payload;
-        },
     },
 });
 
@@ -97,7 +99,7 @@ export const {
     setuserSection,
     setuserTrans,
     setuserHost,
-    setData,
+    setFetchData,
 } = dataSlice.actions;
 
 export const dataSelector = (state: RootState) => state.ReduxUserDetails;

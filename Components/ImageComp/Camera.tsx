@@ -15,10 +15,8 @@ export default function Cameras() {
     const [capturedPhoto, setCapturedPhoto] = useState(null);
 
     if (!permission) {
-        // Camera permissions are still loading
         return <View />;
     }
-
     if (!permission.granted) {
         return (
             <View style={styles.container}>
@@ -29,20 +27,17 @@ export default function Cameras() {
             </View>
         );
     }
-
     async function takePicture() {
         if (this.camera) {
             const photo = await this.camera.takePictureAsync();
             setCapturedPhoto(photo);
         }
     }
-
     function toggleCameraType() {
         setType((current) =>
             current === CameraType.back ? CameraType.front : CameraType.back
         );
     }
-
     return (
         <View style={styles.container}>
             <Camera
