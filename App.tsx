@@ -25,6 +25,26 @@ function App(): JSX.Element {
                 <Provider store={store}>
                     <stack.Navigator>
                         <stack.Screen
+                            name="Edit Profile"
+                            component={InputProfile}
+                            initialParams={{ data: { fmob: "" } }}
+                            listeners={{
+                                beforeRemove: () => {
+                                    console.log("back key pressed");
+                                    return;
+                                },
+                            }}
+                            options={{
+                                headerStyle: {
+                                    backgroundColor: "white",
+                                },
+                                animation: "ios",
+                                animationDuration: 1000,
+
+                                headerBackButtonMenuEnabled: true,
+                            }}
+                        />
+                        <stack.Screen
                             name="Login"
                             component={Login}
                             options={{
@@ -56,7 +76,7 @@ function App(): JSX.Element {
                                 },
                             }}
                         />
-
+                        {/* 
                         <stack.Screen
                             name="Edit Profile"
                             component={InputProfile}
@@ -76,7 +96,7 @@ function App(): JSX.Element {
 
                                 headerBackButtonMenuEnabled: true,
                             }}
-                        />
+                        /> */}
                         <stack.Screen
                             name="Profile"
                             component={Profile}

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
     View,
+    Image,
+    Pressable,
     Text,
     TextInput,
     Button,
@@ -8,6 +10,8 @@ import {
     useWindowDimensions,
     TouchableOpacity,
 } from "react-native";
+import { Svg } from "react-native-svg";
+import Path from "react-native-svg";
 import { Modal } from "react-native";
 import ButtonAnimation from "../BasicComponent/Button";
 import {
@@ -19,6 +23,13 @@ import {
 } from "../app/Data/userValue";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { Circle } from "react-native-animated-spinkit";
+import {
+    launchImageLibrary,
+    launchCamera,
+    ImagePickerResponse,
+} from "react-native-image-picker";
+
+import CameraIcon, { GalleryIcon } from "../assets/SVG";
 const App = (props: { route: { params: any } }) => {
     const { data } = props.route.params;
     const { width, height } = useWindowDimensions();
@@ -31,8 +42,10 @@ const App = (props: { route: { params: any } }) => {
     const [address, setAddress] = useState(data?.pdist);
     const [visible, setVisible] = useState(false);
     const [spin, setSpin] = useState(false);
+    const [cameraflag, setCameraflag] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [visible2, setVisible2] = useState(false);
+    const [blur, setBlur] = useState(10);
     const [flag, setFag] = useState(new Array(6).fill(false));
     const handleSubmit = () => {
         // Handle form submission here
@@ -109,7 +122,41 @@ const App = (props: { route: { params: any } }) => {
         dispatch(setFetchData(fetchData));
         console.log(userData.userData?.tbl_admission.fname);
     }, [visible]);
+    const openImagePicker = () => {};
 
+    const handleCameraLaunch = () => {};
+
+    function handleResponse(response: ImagePickerResponse) {
+        if (response.didCancel) {
+            console.log("User cancelled image picker");
+        } else if (response.error) {
+            console.log("Image picker error: ", response.error);
+        } else {
+            let imageUri =
+                response.uri || (response.assets && response.assets[0].uri);
+            // setSelectedImage(imageUri);
+            console.log("started uploading");
+            // uploadImage(response);
+        }
+    }
+    const openCamera = () => {
+        const options = {
+            mediaType: "photo",
+            includeBase64: false,
+            maxHeight: 2000,
+            maxWidth: 2000,
+        };
+        launchCamera(options, handleResponse);
+    };
+    const openGallary = () => {
+        const options = {
+            mediaType: "photo",
+            includeBase64: false,
+            maxHeight: 2000,
+            maxWidth: 2000,
+        };
+        launchImageLibrary(options, handleResponse);
+    };
     return (
         <View
             style={{
@@ -123,6 +170,206 @@ const App = (props: { route: { params: any } }) => {
                 backgroundColor: "#F1F5F9",
             }}
         >
+            <View
+                style={{
+                    // flex: 1,
+                    width: "100%",
+                    height: height,
+                    alignItems: "center",
+                    backgroundColor: "white",
+                    // borderRadius: 10,
+                    paddingHorizontal: 10,
+                    paddingVertical: 30,
+                }}
+            >
+                <View
+                    style={{
+                        top: -150,
+                        bottom: 0,
+                        width: "100%",
+                        height: 300,
+                        // backgroundColor: "green",
+                        justifyContent: "center",
+                        alignItems: "center",
+                    }}
+                >
+                    <View
+                        style={{
+                            position: "absolute",
+                            width: width,
+                            // height: 150,
+                            backgroundColor: "white",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderBottomRightRadius: 10,
+                            borderBottomLeftRadius: 10,
+                        }}
+                    >
+                        <TouchableOpacity
+                            onPress={() => {
+                                console.log("clicked Back button");
+                                navigator.goBack();
+                            }}
+                            style={{
+                                position: "absolute",
+                                left: 10,
+                                top: 40,
+                            }}
+                        >
+                            <Svg
+                                width={40}
+                                height={40}
+                                viewBox="0 0 16 16"
+                                fill="none"
+                            >
+                                <Path
+                                    d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5"
+                                    fill="white"
+                                />
+                            </Svg>
+                        </TouchableOpacity>
+                        <Pressable
+                            style={{
+                                position: "absolute",
+                                backgroundColor: "black",
+                                width: width,
+                            }}
+                            onTouchStart={() => setBlur(10)}
+                            onTouchEnd={() => {
+                                setBlur(0);
+                            }}
+                            // onPress={()=>}
+                            // onBlur={() => setBlur(0.01)}
+                            // onFocus={() => setBlur(10)}
+                        >
+                            <View
+                                style={{
+                                    bottom: -70,
+                                    width: width,
+                                    flexDirection: "row",
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Image
+                                    source={{
+                                        uri: "https://picsum.photos/200",
+                                    }}
+                                    style={{
+                                        bottom: 0,
+                                        left: -2,
+                                        width: 120,
+                                        height: 120,
+                                        borderWidth: 3,
+                                        backgroundColor: "transparent",
+                                        borderColor: "white",
+                                        borderRadius: 1000 / 2,
+                                    }}
+                                    blurRadius={3}
+                                />
+                                <TouchableOpacity
+                                    style={{
+                                        position: "absolute",
+                                        width: width,
+                                        // bottom: 10,
+                                        // left: 40,
+                                        borderRadius: 50,
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}
+                                    onPress={() => setCameraflag(true)}
+                                >
+                                    <CameraIcon
+                                        color="white"
+                                        width={30}
+                                        height={30}
+                                        style={{
+                                            backgroundColor: "white ",
+                                        }}
+                                    ></CameraIcon>
+                                </TouchableOpacity>
+                            </View>
+                        </Pressable>
+                    </View>
+                </View>
+                <View style={styles.inputContainer1}>
+                    <Text style={styles.label}>Name</Text>
+                    <TextInput
+                        onPressIn={() => {
+                            setFag(new Array(6).fill(false));
+                            setFag(flag.map((_, x) => x == 0));
+                        }}
+                        style={flag[0] ? styles.finput : styles.input}
+                        placeholder="Enter your name"
+                        value={name}
+                        onChangeText={(e: string) => setName(e.toUpperCase())}
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Father's Name</Text>
+                    <TextInput
+                        onPressIn={() => {
+                            setFag(new Array(6).fill(false));
+                            setFag(flag.map((_, x) => x == 1));
+                        }}
+                        style={flag[1] ? styles.finput : styles.input}
+                        placeholder="Enter father's name"
+                        value={fatherName}
+                        onChangeText={(e: string) =>
+                            setFatherName(e.toUpperCase())
+                        }
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Mother's Name</Text>
+                    <TextInput
+                        onPressIn={() => {
+                            setFag(new Array(6).fill(false));
+                            setFag(flag.map((_, x) => x == 2));
+                        }}
+                        style={flag[2] ? styles.finput : styles.input}
+                        placeholder="Enter mother's name"
+                        value={motherName}
+                        onChangeText={(e: string) => {
+                            setMotherName(e.toUpperCase());
+                            setBlur(0.01);
+                        }}
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.label}>Address</Text>
+                    <TextInput
+                        onPressIn={() => {
+                            setFag(new Array(6).fill(false));
+                            setFag(flag.map((_, x) => x == 3));
+                        }}
+                        style={flag[3] ? styles.finput : styles.input}
+                        placeholder="Enter your address"
+                        value={address}
+                        onChangeText={(e: string) =>
+                            setAddress(e.toUpperCase())
+                        }
+                    />
+                </View>
+                <View
+                    style={{
+                        top: -300,
+                    }}
+                >
+                    <ButtonAnimation
+                        onPrssedKey={handleSubmit}
+                        styles={{
+                            color: "white",
+                            backgroundColor: "#FF762A",
+                            fontWeight: "bold",
+                            fontSize: 20,
+                            width: width / 1.3,
+                            borderRadius: 10,
+                        }}
+                        text="Save"
+                    />
+                </View>
+            </View>
             <Modal
                 animationType="fade"
                 visible={spin}
@@ -392,101 +639,69 @@ const App = (props: { route: { params: any } }) => {
                     </View>
                 </View>
             </Modal>
-            <View
-                style={{
-                    // flex: 1,
-                    width: "100%",
-                    height: height,
-                    alignItems: "center",
-                    backgroundColor: "white",
-                    // borderRadius: 10,
-                    paddingHorizontal: 10,
-                    paddingVertical: 30,
+            <Modal
+                animationType="fade"
+                visible={cameraflag}
+                transparent={true}
+                onRequestClose={() => {
+                    // setVisible2(false);
+                    setCameraflag(false);
                 }}
             >
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Name</Text>
-                    <TextInput
-                        onPressIn={() => {
-                            setFag(new Array(6).fill(false));
-                            setFag(flag.map((_, x) => x == 0));
-                        }}
-                        style={flag[0] ? styles.finput : styles.input}
-                        placeholder="Enter your name"
-                        value={name}
-                        onChangeText={(e: string) => setName(e.toUpperCase())}
-                    />
-                </View>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Father's Name</Text>
-                    <TextInput
-                        onPressIn={() => {
-                            setFag(new Array(6).fill(false));
-                            setFag(flag.map((_, x) => x == 1));
-                        }}
-                        style={flag[1] ? styles.finput : styles.input}
-                        placeholder="Enter father's name"
-                        value={fatherName}
-                        onChangeText={(e: string) =>
-                            setFatherName(e.toUpperCase())
-                        }
-                    />
-                </View>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Mother's Name</Text>
-                    <TextInput
-                        onPressIn={() => {
-                            setFag(new Array(6).fill(false));
-                            setFag(flag.map((_, x) => x == 2));
-                        }}
-                        style={flag[2] ? styles.finput : styles.input}
-                        placeholder="Enter mother's name"
-                        value={motherName}
-                        onChangeText={(e: string) =>
-                            setMotherName(e.toUpperCase())
-                        }
-                    />
-                </View>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.label}>Address</Text>
-                    <TextInput
-                        onPressIn={() => {
-                            setFag(new Array(6).fill(false));
-                            setFag(flag.map((_, x) => x == 3));
-                        }}
-                        style={flag[3] ? styles.finput : styles.input}
-                        placeholder="Enter your address"
-                        value={address}
-                        onChangeText={(e: string) =>
-                            setAddress(e.toUpperCase())
-                        }
-                    />
-                </View>
                 <View
                     style={{
-                        top: -300,
+                        flex: 1,
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        paddingHorizontal: 30,
                     }}
                 >
-                    <ButtonAnimation
-                        onPrssedKey={handleSubmit}
-                        styles={{
-                            color: "white",
-                            backgroundColor: "#FF762A",
-                            fontWeight: "bold",
-                            fontSize: 20,
-                            width: width / 1.3,
-                            borderRadius: 10,
+                    <View
+                        style={{
+                            width: "100%",
+                            height: 150,
+                            backgroundColor: "#F1F5F9",
+                            flexDirection: "row",
+                            borderRadius: 20,
+                            paddingHorizontal: 30,
+                            justifyContent: "space-around",
+                            alignItems: "center",
                         }}
-                        text="Save"
-                    />
+                    >
+                        <TouchableOpacity
+                            onPress={() => {
+                                openCamera();
+                            }}
+                        >
+                            <CameraIcon width={50} height={50} color="gray" />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            onPress={() => {
+                                openGallary();
+                            }}
+                        >
+                            <GalleryIcon width={50} height={50} color="gray" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
+            </Modal>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     inputContainer: {
+        flexDirection: "row",
+        top: -140,
+
+        alignItems: "center",
+        marginBottom: 20,
+    },
+    inputContainer1: {
+        top: -140,
         flexDirection: "row",
         alignItems: "center",
         marginBottom: 20,
