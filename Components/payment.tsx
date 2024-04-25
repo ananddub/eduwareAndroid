@@ -55,6 +55,18 @@ function Payment() {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
+              <View
+                style={{
+                  width: '100%',
+                  height: 50,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderBottomWidth: 1,
+                  backgroundColor: 'red',
+                  borderBottomColor: 'gray',
+                }}>
+                <Text>Details</Text>
+              </View>
               <PaymentProfile title="Admission No" value={data?.admno} />
               <PaymentProfile title="Name" value={data?.name} />
               <PaymentProfile title="Class" value={data?.class} />

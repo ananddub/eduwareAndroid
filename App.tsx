@@ -25,26 +25,6 @@ function App(): JSX.Element {
         <Provider store={store}>
           <stack.Navigator>
             <stack.Screen
-              name="Edit Profile"
-              component={InputProfile}
-              initialParams={{data: {fmob: ''}}}
-              listeners={{
-                beforeRemove: () => {
-                  console.log('back key pressed');
-                  return;
-                },
-              }}
-              options={{
-                headerStyle: {
-                  backgroundColor: 'white',
-                },
-                animation: 'ios',
-                animationDuration: 1000,
-
-                headerBackButtonMenuEnabled: true,
-              }}
-            />
-            <stack.Screen
               name="Login"
               component={Login}
               options={{
@@ -76,27 +56,26 @@ function App(): JSX.Element {
                 },
               }}
             />
-            {/* 
-                        <stack.Screen
-                            name="Edit Profile"
-                            component={InputProfile}
-                            initialParams={{ data: { fmob: "" } }}
-                            listeners={{
-                                beforeRemove: () => {
-                                    console.log("back key pressed");
-                                    return;
-                                },
-                            }}
-                            options={{
-                                headerStyle: {
-                                    backgroundColor: "white",
-                                },
-                                animation: "ios",
-                                animationDuration: 1000,
 
-                                headerBackButtonMenuEnabled: true,
-                            }}
-                        /> */}
+            <stack.Screen
+              name="Edit Profile"
+              component={InputProfile}
+              initialParams={{data: {fmob: ''}}}
+              options={{
+                headerShown: false,
+                headerStyle: {
+                  backgroundColor: '#F1F5F9',
+                },
+                animation: 'simple_push',
+                animationDuration: 500,
+              }}
+              listeners={{
+                beforeRemove: () => {
+                  console.log('back key pressed');
+                  return;
+                },
+              }}
+            />
             <stack.Screen
               name="Profile"
               component={Profile}
@@ -105,8 +84,8 @@ function App(): JSX.Element {
                 headerStyle: {
                   backgroundColor: 'white',
                 },
-                animation: 'ios',
-                animationDuration: 1000,
+                animation: 'simple_push',
+                animationDuration: 500,
               }}
             />
             <stack.Screen

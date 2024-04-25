@@ -15,6 +15,7 @@ export interface ReduxUserDetail {
     userTrans: string;
     userHost: string;
     url: string;
+    image:any;
     userData?: SqlData;
 }
 
@@ -30,11 +31,12 @@ const initialState: ReduxUserDetail = {
     userSection: '',
     userTrans: '',
     userHost: '',
-    // url: 'https://reactnativebackend-2mi8.onrender.com/',
-    url: 'http://192.168.1.6:4003/',
+    url: 'https://reactnativebackend-2mi8.onrender.com/',
+    image:'',
+    // url: 'http://192.168.1.6:4003/',
     userData: undefined,
 };
-
+9931729331
 export const dataSlice = createSlice({
     name: 'ReduxUserDetails',
     initialState,
@@ -84,6 +86,9 @@ export const dataSlice = createSlice({
         setuserHost: (state, value: PayloadAction<string>) => {
             state.userHost = value.payload;
         },
+        setImage: (state, value: PayloadAction<any>) => {
+            state.image=value.payload
+        }
     },
 });
 
@@ -100,6 +105,7 @@ export const {
     setuserTrans,
     setuserHost,
     setFetchData,
+    setImage,
 } = dataSlice.actions;
 
 export const dataSelector = (state: RootState) => state.ReduxUserDetails;

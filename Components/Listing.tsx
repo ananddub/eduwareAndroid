@@ -17,6 +17,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useAppDispatch, useAppSelector} from '../app/hooks';
 import {
   dataSelector,
+  setImage,
   setuserAdm,
   setuserClass,
   setuserFatherName,
@@ -28,7 +29,8 @@ import {
   setuserStatus,
   setuserTrans,
 } from '../app/Data/userValue';
-const renderItem = ({item}: {item: any}): JSX.Element => {
+const RenderItem = ({item, img}: {item: any; img: any}): JSX.Element => {
+  item = item.item;
   return (
     <View>
       <View
@@ -38,11 +40,12 @@ const renderItem = ({item}: {item: any}): JSX.Element => {
           flexDirection: 'row',
         }}>
         <Image
-          source={{uri: 'https://picsum.photos/200'}}
+          source={{uri: `data:image/jpeg;base64,${img.data}`}}
           style={{
             width: 50,
             height: 50,
             borderRadius: 100 / 2,
+            backgroundColor: 'gray',
             marginRight: 10,
           }}
         />
@@ -166,6 +169,11 @@ const renderItem = ({item}: {item: any}): JSX.Element => {
     </View>
   );
 };
+interface ImageValue {
+  name: string;
+  data: string;
+  type: string;
+}
 import {Modal} from 'react-native';
 export const Listing = (): JSX.Element => {
   const width: number = Dimensions.get('window').width;
@@ -179,13 +187,14 @@ export const Listing = (): JSX.Element => {
   const [visible, setVisible] = useState(false);
   const dispatch = useAppDispatch();
   const userData = useAppSelector(dataSelector);
+  let [imagearr, setImageArr] = useState(new Array<any>());
   const [selected, setSelected]: [number, (value: number) => void] =
     useState(0);
   const phone = userData.userPhone;
   // console.log("phone: ", selected);
   useEffect(() => {
     const url = `${userData.url}phoneVerfication?phone=${userData.userPhone}`;
-    // console.log([url, 0]);
+    // console.log([url, 0]);9
     fetch(url.trim()).then((res: any) => {
       if (res.status === 200) {
         res.json().then((data: any) => {
@@ -198,10 +207,14 @@ export const Listing = (): JSX.Element => {
             onsubmit(data.status.data[0], 0);
             return;
           }
+          // console.log(data.image[0].name);
           setData(data.status.data);
           setSearch(data.status.data);
+          console.log(data.image.length);
+          setImageArr(data.image);
           setSelected(-1);
         });
+        // 9631086222
       } else {
         console.log('unable to connect');
       }
@@ -220,7 +233,7 @@ export const Listing = (): JSX.Element => {
       setSearch(arr);
     }
   }, [text]);
-  const onsubmit = (item: any, selected: number): void => {
+  const onsubmit = (item: any, selected: number, image: any): void => {
     if (selected != -1) {
       console.log('new admno, selected :', item.admno);
       // dispatch(setuserAdm(item.admno))
@@ -234,6 +247,7 @@ export const Listing = (): JSX.Element => {
       dispatch(setuserStatus(item.active));
       dispatch(setuserTrans(item.transport));
       dispatch(setuserHost(item.hostel));
+      dispatch(setImage(`data:image/jpeg;base64,${image}`));
       navigate.dispatch(
         CommonActions.reset({
           index: 0,
@@ -286,11 +300,27 @@ export const Listing = (): JSX.Element => {
           }}
           data={search}
           renderItem={(item: any) => {
+            console.log(item.id);
+            let images: any = '';
+            for (let data of imagearr) {
+              console.log(
+                data.name,
+                item.item.admno,
+                data.name.includes(item.item.admno.trim()),
+              );
+              if (data.name.includes(item.item.admno.trim()) == true) {
+                console.log('passeed');
+                images = data;
+                console.log(images);
+                break;
+              }
+            }
+
             return (
               <Pressable
                 onPress={() => {
                   setFocus(false);
-                  setSelected(item.index);
+                  setSelected(item.index, images);
                 }}
                 style={{
                   backgroundColor: selected == item.index ? '#FFF7ED' : 'white',
@@ -298,7 +328,7 @@ export const Listing = (): JSX.Element => {
                   borderWidth: 1,
                   borderColor: selected == item.index ? '#FFEDD5' : '#EAEBEF',
                 }}>
-                {renderItem(item)}
+                {RenderItem({item, img: images})}
               </Pressable>
             );
           }}
