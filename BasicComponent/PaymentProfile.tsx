@@ -4,7 +4,7 @@ function PaymentProfile({title, value}: {title: string; value: string}) {
     <View
       style={{
         width: '100%',
-        padding: 10,
+        padding: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
       }}>
@@ -12,6 +12,7 @@ function PaymentProfile({title, value}: {title: string; value: string}) {
         style={{
           color: 'gray',
           width: '50%',
+          paddingLeft: 20,
           fontWeight: '500',
           fontSize: 15,
         }}>
@@ -21,6 +22,7 @@ function PaymentProfile({title, value}: {title: string; value: string}) {
         style={{
           color: 'gray',
           fontSize: 15,
+          paddingLeft: 20,
           fontWeight: '500',
           width: '50%',
         }}>

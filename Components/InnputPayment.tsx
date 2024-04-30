@@ -259,39 +259,43 @@ function InputPaymentProfile() {
       style={{
         width: width,
         height: height + 10,
-        backgroundColor: '#F1F5F9',
+        backgroundColor: '#E5EAF1',
       }}>
       <ScrollView
         style={{
           width: width,
           borderRadius: 20,
           paddingHorizontal: 20,
-          backgroundColor: '#F1F5F9',
+          backgroundColor: '#E5EAF1',
         }}>
         <View
           style={{
             width: '100%',
             marginTop: 20,
             marginBottom: 10,
-
             justifyContent: 'center',
             alignItems: 'center',
             flexDirection: 'column',
-            backgroundColor: '#F1F5F9',
-
+            backgroundColor: '#E5EAF1',
+            borderColor: '#eef2f6',
             borderRadius: 20,
           }}>
           <View
             style={{
               width: '100%',
               backgroundColor: 'white',
+
               flexDirection: 'column',
               justifyContent: 'center',
-              borderRadius: 15,
-              padding: 20,
+              paddingHorizontal: 20,
+              paddingBottom: 20,
+              borderWidth: 1,
+              borderColor: 'white',
               elevation: 10,
-
               shadowColor: 'gray',
+              // elevation: 10,
+              borderRadius: 20,
+              // shadowColor: 'gray',
               alignItems: 'center',
             }}>
             <View
@@ -299,21 +303,20 @@ function InputPaymentProfile() {
                 width: '100%',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
-                borderRadius: 20,
-                // alignItems: "center",
+                borderWidth: 0,
+                borderBottomWidth: 1,
+                borderTopRightRadius: 20,
+                borderTopLeftRadius: 20,
+                borderColor: '#cccccc',
+                backgroundColor: '#ffffff',
               }}>
               <Text
                 style={{
                   color: 'gray',
-                  backgroundColor: '#01BAFA',
-                  color: 'white',
-                  width: '48%',
                   padding: 10,
                   borderRadius: 20,
-                  elevation: 4,
-                  shadowColor: '#01BAFA',
                   fontSize: 16,
-                  fontWeight: '500',
+                  fontWeight: '600',
                 }}>
                 Monthly (₹{data?.tbl_stdfeemaster.monthfee})
               </Text>
@@ -322,15 +325,11 @@ function InputPaymentProfile() {
                   <Text
                     style={{
                       color: 'gray',
-                      backgroundColor: '#01BAFA',
-                      color: 'white',
                       width: '48%',
                       padding: 10,
                       borderRadius: 20,
-                      elevation: 4,
-                      shadowColor: '#01BAFA',
                       fontSize: 16,
-                      fontWeight: '500',
+                      fontWeight: '600',
                     }}>
                     Transport (₹
                     {data?.tbl_stdfeemaster.transportfee})
@@ -341,38 +340,17 @@ function InputPaymentProfile() {
                 data.tbl_admission.hostel == 'YES' && (
                   <Text
                     style={{
-                      color: 'gray',
-                      backgroundColor: '#01BAFA',
                       color: 'white',
                       width: '48%',
                       padding: 10,
                       borderRadius: 20,
-                      elevation: 4,
-                      shadowColor: '#01BAFA',
                       fontSize: 16,
-                      fontWeight: '500',
+                      fontWeight: '600',
                     }}>
                     Hostel (₹
                     {data?.tbl_stdfeemaster.hostelfee})
                   </Text>
                 )}
-              {/* <Text
-                                    style={{
-                      color:"gray",
-                                        backgroundColor: "#01BAFA",
-                                        color: "white",
-                                        width: "48%",
-                                        padding: 10,
-                                        borderRadius: 20,
-                                        shadowColor: "#01BAFA",
-
-                                        elevation: 5,
-                                        fontSize: 16,
-                                        fontWeight: "500",
-                                    }}
-                                >
-                                    Transport (₹600)
-                                </Text> */}
             </View>
 
             <View
@@ -472,16 +450,48 @@ function InputPaymentProfile() {
           <View
             style={{
               marginTop: 10,
-              elevation: 10,
+              elevation: 4,
               borderRadius: 20,
-              paddingVertical: 20,
+              paddingVertical: 30,
+              paddingHorizontal: 10,
               shadowColor: 'gray',
-              // paddingHorizontal: 10,
               backgroundColor: 'white',
+              // borderWidth: 1,
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
             }}>
+            <View
+              style={{
+                width: '100%',
+                top: -20,
+                paddingHorizontal: 10,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                // backgroundColor: 'red',
+                borderColor: 'gray',
+                borderBottomWidth: 1,
+              }}>
+              <Text
+                style={{
+                  color: 'gray',
+                  width: '70%',
+                  fontWeight: '500',
+                  fontSize: 17,
+                }}>
+                Detail
+              </Text>
+              <Text
+                style={{
+                  color: 'gray',
+                  fontSize: 17,
+                  textAlign: 'left',
+                  fontWeight: '500',
+                  width: '25%',
+                }}>
+                Price
+              </Text>
+            </View>
             <View
               style={{
                 width: '100%',
@@ -491,7 +501,7 @@ function InputPaymentProfile() {
               }}>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   width: '70%',
                   fontWeight: '400',
                   fontSize: 17,
@@ -500,7 +510,7 @@ function InputPaymentProfile() {
               </Text>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   fontSize: 17,
                   textAlign: 'left',
 
@@ -519,10 +529,11 @@ function InputPaymentProfile() {
                 paddingHorizontal: 10,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
+                marginBottom: 10,
               }}>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   width: '70%',
                   fontWeight: '400',
                   fontSize: 17,
@@ -531,7 +542,7 @@ function InputPaymentProfile() {
               </Text>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   fontSize: 17,
                   textAlign: 'left',
                   fontWeight: '400',
@@ -540,34 +551,39 @@ function InputPaymentProfile() {
                 {lmonthCount * data?.tbl_monthlyfeesetup.fine}
               </Text>
             </View>
-            <View
-              style={{
-                width: '100%',
-                paddingTop: 20,
-                paddingHorizontal: 10,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
-              <Text
+            {data?.tbl_admission.transport === 'YES' && (
+              <View
                 style={{
-                  color: 'gray',
-                  width: '70%',
-                  fontWeight: '400',
-                  fontSize: 17,
+                  width: '100%',
+                  paddingTop: 20,
+                  paddingHorizontal: 10,
+                  flexDirection: 'row',
+
+                  justifyContent: 'space-between',
                 }}>
-                Destination
-              </Text>
-              <Text
-                style={{
-                  color: 'gray',
-                  fontSize: 17,
-                  textAlign: 'left',
-                  fontWeight: '400',
-                  width: '25%',
-                }}>
-                0
-              </Text>
-            </View>
+                <Text
+                  style={{
+                    color: '#545454',
+                    // width: '40%',
+                    fontWeight: '400',
+                    fontSize: 17,
+                  }}>
+                  Destination
+                </Text>
+                <Text
+                  style={{
+                    color: '#545454',
+                    fontSize: 17,
+                    textAlign: 'left',
+                    fontWeight: '400',
+                    // width: '60%',
+                  }}>
+                  {data?.tbl_admission !== undefined
+                    ? data?.tbl_admission.pdist
+                    : ''}
+                </Text>
+              </View>
+            )}
 
             <View
               style={{
@@ -578,7 +594,7 @@ function InputPaymentProfile() {
               }}>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   width: '70%',
                   fontWeight: '400',
                   fontSize: 17,
@@ -597,7 +613,7 @@ function InputPaymentProfile() {
               </Text>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   fontSize: 17,
                   textAlign: 'left',
                   fontWeight: '400',
@@ -619,7 +635,7 @@ function InputPaymentProfile() {
               }}>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   width: '70%',
                   fontWeight: '400',
                   fontSize: 17,
@@ -640,7 +656,7 @@ function InputPaymentProfile() {
               </Text>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   fontSize: 17,
                   textAlign: 'left',
                   fontWeight: '400',
@@ -664,7 +680,7 @@ function InputPaymentProfile() {
               }}>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   width: '70%',
                   fontWeight: '400',
                   fontSize: 17,
@@ -684,7 +700,7 @@ function InputPaymentProfile() {
               </Text>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   fontSize: 17,
                   textAlign: 'left',
                   fontWeight: '400',
@@ -706,7 +722,7 @@ function InputPaymentProfile() {
               }}>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   width: '70%',
                   fontWeight: '400',
                   fontSize: 17,
@@ -726,7 +742,7 @@ function InputPaymentProfile() {
               </Text>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   fontSize: 17,
                   textAlign: 'left',
                   fontWeight: '400',
@@ -750,7 +766,7 @@ function InputPaymentProfile() {
               }}>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   width: '70%',
                   fontWeight: '400',
                   fontSize: 17,
@@ -759,7 +775,7 @@ function InputPaymentProfile() {
               </Text>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   fontSize: 17,
                   textAlign: 'left',
                   fontWeight: '400',
@@ -777,7 +793,7 @@ function InputPaymentProfile() {
               }}>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   width: '70%',
                   fontWeight: '400',
                   fontSize: 17,
@@ -786,7 +802,7 @@ function InputPaymentProfile() {
               </Text>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   fontSize: 17,
                   textAlign: 'left',
                   fontWeight: '400',
@@ -804,7 +820,7 @@ function InputPaymentProfile() {
               }}>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   width: '70%',
                   fontWeight: '400',
                   fontSize: 17,
@@ -813,7 +829,7 @@ function InputPaymentProfile() {
               </Text>
               <Text
                 style={{
-                  color: 'gray',
+                  color: '#545454',
                   fontSize: 17,
                   textAlign: 'left',
                   fontWeight: '400',
@@ -850,7 +866,7 @@ function InputPaymentProfile() {
             paddingVertical: 10,
             flexDirection: 'column',
             backgroundColor: 'white',
-            height: 130,
+            height: 100,
             justifyContent: 'space-between',
             alignItems: 'center',
             borderWidth: 1,

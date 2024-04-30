@@ -3,9 +3,10 @@ import {TouchableOpacity, StyleSheet} from 'react-native';
 import {ScrollView, Image} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../app/hooks';
 import {dataSelector, setFetchData, setImage} from '../app/Data/userValue';
-import {useNavigation} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 import {Circle} from 'react-native-animated-spinkit';
 import {useEffect, useState} from 'react';
+import {Socket, io} from 'socket.io-client';
 import Modals from '../BasicComponent/Modal';
 // 9631086222
 function Home() {
@@ -19,6 +20,7 @@ function Home() {
   const dispatch = useAppDispatch();
   const userData = useAppSelector(dataSelector);
   const [image, setImages] = useState<any>(userData.image);
+  const [message, setMessage] = useState<number>(0);
   useEffect(() => {
     console.log('reloaded ');
     if (userData.userData?.tbl_admission === undefined) {
@@ -37,7 +39,7 @@ function Home() {
                 console.log('success seted data to redux');
                 if (data.image !== null)
                   setImages(`data:image/jpeg;base64,${data.image}`);
-                console.log('success', data.image);
+                // console.log('success', data.image);
                 console.log('reloaded sucess');
                 console.log('success seted data to redux');
                 setVisible(false);
@@ -49,9 +51,8 @@ function Home() {
               }
             });
           } else {
-            setError(true);
+            // setError(true);
             setText('Network Error ');
-            setError(true);
             setVisible(false);
           }
         })
@@ -65,9 +66,45 @@ function Home() {
     }
   }, []);
   useEffect(() => {
+    console.log('re rendered message');
+    const socket = io(userData.socketurl);
+    socket.on('getlength', (value: any) => {
+      console.log('length :', value);
+      setMessage(value.unseen);
+    });
+    socket.on('connect', () => {
+      console.log('connected to socket');
+      socket.emit('register', {
+        admno: userData.userAdm,
+        class: userData.userClass,
+        sec: userData.userSection,
+      });
+      socket.emit('getlength', {
+        admno: userData.userAdm,
+        class: userData.userClass,
+        sec: userData.userSection,
+      });
+    });
+    socket.on('notice', (mes: any) => {
+      console.log('active the notice :');
+      // message.unshift(mes);
+      socket.emit('getlength', {
+        admno: userData.userAdm,
+        class: userData.userClass,
+        sec: userData.userSection,
+      });
+      // setMessage(message.filter(item => true));
+    });
+    return () => {
+      console.log('socket off from home');
+      setMessage(0);
+      socket.off('notice');
+      socket.off('getlength');
+    };
+  }, []);
+  useEffect(() => {
     if (data !== undefined) dispatch(setFetchData(data));
-    // console.log('images seted');
-    if (image !== '' && image != null) dispatch(setImage(image));
+    if (image !== '') dispatch(setImage(image));
   }, [data, image]);
 
   return (
@@ -247,7 +284,16 @@ function Home() {
         </View>
         {/* 1st part */}
         <View style={styles.flexdata}>
-          <TouchableOpacity style={styles.box}>
+          <TouchableOpacity
+            style={styles.box}
+            onPress={() => {
+              navigator.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{name: 'Notice'}],
+                }),
+              );
+            }}>
             {/* <View style={{top:1}}> */}
 
             <Image
@@ -255,12 +301,31 @@ function Home() {
               style={{
                 width: 100,
                 height: 100,
-                top: -15,
+                top: -10,
               }}
             />
+            {message > 0 && (
+              <Text
+                style={{
+                  color: 'white',
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  backgroundColor: 'red',
+                  fontSize: 13,
+                  borderRadius: 100 / 2,
+                  // width: 20,
+                  height: 20,
+                  paddingHorizontal: 10,
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                }}>
+                {message}
+              </Text>
+            )}
             {/* </View> */}
             {/* <Icon name="campaign" size={30} color="#000" /> */}
-            <Text style={styles.text}>Annoucement</Text>
+            <Text style={styles.text}>Annoucment</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.box}>
             <Image

@@ -15,6 +15,7 @@ import Payment from './Components/payment';
 import Input from './BasicComponent/Input';
 import {useNavigation} from '@react-navigation/native';
 import InputPaymentProfile from './Components/InnputPayment';
+import Notice from './Components/Notice';
 // 9122036829
 const stack = createNativeStackNavigator();
 function App(): JSX.Element {
@@ -56,7 +57,18 @@ function App(): JSX.Element {
                 },
               }}
             />
-
+            <stack.Screen
+              name="Notice"
+              component={Notice}
+              options={{
+                headerShown: false,
+                headerStyle: {
+                  backgroundColor: '#F1F5F9',
+                },
+                animation: 'simple_push',
+                animationDuration: 500,
+              }}
+            />
             <stack.Screen
               name="Edit Profile"
               component={InputProfile}

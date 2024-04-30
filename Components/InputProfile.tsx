@@ -224,7 +224,7 @@ const App = (props: {route: {params: any}}) => {
         alignItems: 'center',
         // backgroundColor: "red",
         // paddingHorizontal: 10,
-        backgroundColor: '#F1F5F9',
+        backgroundColor: '#E5EAF1',
       }}>
       <View
         style={{
@@ -232,7 +232,8 @@ const App = (props: {route: {params: any}}) => {
           width: '100%',
           height: height,
           alignItems: 'center',
-          backgroundColor: 'white',
+          backgroundColor: '#F1F5F9',
+
           // borderRadius: 10,
           paddingHorizontal: 10,
           paddingVertical: 30,

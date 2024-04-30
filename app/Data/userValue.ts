@@ -15,6 +15,7 @@ export interface ReduxUserDetail {
     userTrans: string;
     userHost: string;
     url: string;
+    socketurl: string;
     image:any;
     userData?: SqlData;
 }
@@ -31,9 +32,10 @@ const initialState: ReduxUserDetail = {
     userSection: '',
     userTrans: '',
     userHost: '',
-    url: 'https://reactnativebackend-2mi8.onrender.com/',
+    // url: 'https://reactnativebackend-2mi8.onrender.com/',
     image:'',
-    // url: 'http://192.168.1.6:4003/',
+    url: 'http://192.168.1.6:3000/',
+    socketurl: 'http://192.168.1.6:4000/',
     userData: undefined,
 };
 9931729331

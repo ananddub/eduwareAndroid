@@ -27,19 +27,23 @@ function Payment() {
         style={{
           width: width,
           height: height + 10,
-          backgroundColor: 'white',
+          backgroundColor: '#E5EAF1',
+          flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'center',
           borderRadius: 20,
+          marginBottom: 30,
         }}>
         <ScrollView>
           <View
             style={{
-              // position: "relateive",
-              height: height,
+              marginTop: 60,
               flex: 1,
               justifyContent: 'center',
               alignItems: 'center',
               paddingHorizontal: 5,
               backgroundColor: '#E5EAF1',
+              // backgroundColor: 'red',
             }}>
             <View
               style={{
@@ -55,17 +59,29 @@ function Payment() {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
+              {/* 9631086222 */}
               <View
                 style={{
                   width: '100%',
                   height: 50,
+                  top: -20,
                   justifyContent: 'center',
-                  alignItems: 'center',
                   borderBottomWidth: 1,
-                  backgroundColor: 'red',
-                  borderBottomColor: 'gray',
+                  borderTopLeftRadius: 20,
+                  borderTopRightRadius: 20,
+                  backgroundColor: 'white',
+                  borderBottomColor: '#d5d9df',
                 }}>
-                <Text>Details</Text>
+                <Text
+                  style={{
+                    fontSize: 17,
+                    color: '#546f83',
+                    fontWeight: '500',
+                    textAlign: 'left',
+                    marginLeft: 10,
+                  }}>
+                  Profile Details
+                </Text>
               </View>
               <PaymentProfile title="Admission No" value={data?.admno} />
               <PaymentProfile title="Name" value={data?.name} />
@@ -80,31 +96,38 @@ function Payment() {
               <PaymentProfile title="Hostel" value={data?.hostel} />
               <PaymentProfile title="Session" value={data?.session} />
             </View>
-            <TouchableOpacity
-              onPress={() => navigate.navigate('Select Month')}
-              style={{
-                width: '95%',
-                height: 50,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 20,
-                marginTop: 10,
-                elevation: 10,
-                shadowColor: '#F97316',
-                backgroundColor: '#F97316',
-              }}>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontWeight: '500',
-                  color: 'white',
-                }}>
-                Next
-              </Text>
-            </TouchableOpacity>
-            {/* <Button title="ky Hll" /> */}
           </View>
         </ScrollView>
+        <View
+          style={{
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <TouchableOpacity
+            onPress={() => navigate.navigate('Select Month')}
+            style={{
+              width: '95%',
+              height: 50,
+              top: -110,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 20,
+              elevation: 10,
+              shadowColor: '#F97316',
+              backgroundColor: '#F97316',
+            }}>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: '500',
+                color: 'white',
+              }}>
+              Next
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {/* <Button title="ky Hll" /> */}
       </View>
     </>
   );
