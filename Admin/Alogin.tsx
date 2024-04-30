@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text} from 'react-native';
 import {View} from 'react-native';
-function Login() {
+function ALogin() {
   return (
     <View>
       <Text></Text>
@@ -9,4 +9,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default ALogin;
